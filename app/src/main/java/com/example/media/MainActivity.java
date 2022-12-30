@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         File filesList[] = mediaFolder.listFiles();
         for (int i = 0; i < filesList.length; i++) {
-            Log.d("MEDIA", filesList[i].getName());
+            //Log.d("MEDIA", filesList[i].getName());
             String pathStr = sdRoot + "/_Media/" + filesList[i].getName() + "/data.json";
             File jsonFile = new File(pathStr);
             // read data.json
@@ -66,8 +66,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
             // parse data.json to map
-            Map<String, String> map = Utils.parseJson(jsonStr);
-
+            try {
+                Map<String, String> map = Utils.parseJson(jsonStr);
+            } catch (Exception e) {
+                Toast(e.getMessage());
+                break;
+            }
         }
 
         //setListAdapter(new ArrayAdapter<String>(this,
