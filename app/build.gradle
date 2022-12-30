@@ -41,4 +41,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+
+    // https://stackoverflow.com/questions/12910503/read-file-as-string
+    implementation 'org.apache.directory.studio:org.apache.commons.io:2.4'
 }

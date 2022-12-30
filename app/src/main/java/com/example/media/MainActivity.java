@@ -1,27 +1,33 @@
 package com.example.media;
 
 import android.os.Bundle;
-
 import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Environment;
+import android.util.Log;
 import android.view.View;
-
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
 import com.example.media.databinding.ActivityMainBinding;
-
 import android.view.Menu;
 import android.view.MenuItem;
+
+import org.apache.commons.io.IOUtils;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
+
+    private ArrayList<String> mediaList;
+    private File mediaFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +41,25 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
+        // List _Media files on sdcard
+        mediaList = new ArrayList<String>();
+        String sdRoot = Environment.getExternalStorageDirectory().toString();
+        File mediaFolder = new File(sdRoot + "/_Media");
+
+
+
+        File filesList[] = mediaFolder.listFiles();
+        for (int i = 0; i < filesList.length; i++) {
+            Log.d("MEDIA", filesList[i].getName());
+            //IOUtils.toString();
+            //IOUtils.toString(context.getResources().openRawResource(<your_resource_id>), StandardCharsets.UTF_8)
+            //myList.add(list[i].getName());
+        }
+
+        //setListAdapter(new ArrayAdapter<String>(this,
+        //        android.R.layout.simple_list_item_1, myList ));
+
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
