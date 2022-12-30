@@ -14,12 +14,17 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.media.databinding.ActivityMainBinding;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
-import org.apache.commons.io.IOUtils;
+import com.example.media.Utils;
+
+//import org.apache.commons.io.IOUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,14 +52,22 @@ public class MainActivity extends AppCompatActivity {
         String sdRoot = Environment.getExternalStorageDirectory().toString();
         File mediaFolder = new File(sdRoot + "/_Media");
 
-
-
         File filesList[] = mediaFolder.listFiles();
         for (int i = 0; i < filesList.length; i++) {
             Log.d("MEDIA", filesList[i].getName());
-            //IOUtils.toString();
-            //IOUtils.toString(context.getResources().openRawResource(<your_resource_id>), StandardCharsets.UTF_8)
-            //myList.add(list[i].getName());
+            String pathStr = sdRoot + "/_Media/" + filesList[i].getName() + "/data.json";
+            File jsonFile = new File(pathStr);
+            // read data.json
+            String jsonStr = "";
+            try {
+                jsonStr = Utils.readJson(jsonFile);
+            } catch (IOException e) {
+                Toast(e.getMessage());
+                break;
+            }
+            // parse data.json to map
+            Map<String, String> map = Utils.parseJson(jsonStr);
+
         }
 
         //setListAdapter(new ArrayAdapter<String>(this,
@@ -97,5 +110,16 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    public void Toast(String errorStr) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(),
+                        "Error: " + errorStr,
+                        Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

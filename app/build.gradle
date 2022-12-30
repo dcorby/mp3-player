@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+
     namespace 'com.example.media'
     compileSdk 32
 
@@ -43,5 +44,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
 
     // https://stackoverflow.com/questions/12910503/read-file-as-string
-    implementation 'org.apache.directory.studio:org.apache.commons.io:2.4'
+    // https://stackoverflow.com/questions/45419245/android-apk-install-failed-no-matching-abis-failed-to-extract-native-libraries
+    //implementation 'org.apache.directory.studio:org.apache.commons.io:2.4'
+    //implementation 'org.apache.commons:commons-io:2.11.0'
 }
