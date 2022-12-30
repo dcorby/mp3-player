@@ -50,28 +50,11 @@ public class MainActivity extends AppCompatActivity {
         // List _Media files on sdcard
         mediaList = new ArrayList<String>();
         String sdRoot = Environment.getExternalStorageDirectory().toString();
-        File mediaFolder = new File(sdRoot + "/_Media");
-
-        File filesList[] = mediaFolder.listFiles();
+        String appRoot = sdRoot + "/SimpleMediaPlayer";
+        File mediaFolder = new File(appRoot);
+        File filesList[] = mediaFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".mp3"));
         for (int i = 0; i < filesList.length; i++) {
-            //Log.d("MEDIA", filesList[i].getName());
-            String pathStr = sdRoot + "/_Media/" + filesList[i].getName() + "/data.json";
-            File jsonFile = new File(pathStr);
-            // read data.json
-            String jsonStr = "";
-            try {
-                jsonStr = Utils.readJson(jsonFile);
-            } catch (IOException e) {
-                Toast(e.getMessage());
-                break;
-            }
-            // parse data.json to map
-            try {
-                Map<String, String> map = Utils.parseJson(jsonStr);
-            } catch (Exception e) {
-                Toast(e.getMessage());
-                break;
-            }
+
         }
 
         //setListAdapter(new ArrayAdapter<String>(this,
