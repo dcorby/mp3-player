@@ -9,11 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.media.databinding.FragmentSecondBinding;
+import com.example.media.databinding.FragmentProcessBinding;
 
 public class ProcessFragment extends Fragment {
 
-    private FragmentSecondBinding binding;
+    private FragmentProcessBinding binding;
 
     @Override
     public View onCreateView(
@@ -21,7 +21,7 @@ public class ProcessFragment extends Fragment {
             Bundle savedInstanceState
     ) {
 
-        binding = FragmentSecondBinding.inflate(inflater, container, false);
+        binding = FragmentProcessBinding.inflate(inflater, container, false);
         return binding.getRoot();
 
     }
@@ -33,7 +33,7 @@ public class ProcessFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(ProcessFragment.this)
-                        .navigate(R.id.action_SecondFragment_to_FirstFragment);
+                        .navigate(R.id.action_ProcessFragment_to_HomeFragment);
             }
         });
     }

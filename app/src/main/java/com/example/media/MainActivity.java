@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.media.Utils;
+import com.example.media.MainReceiver;
 
 //import org.apache.commons.io.IOUtils;
 
@@ -26,17 +27,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity implements MainReceiver {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
 
     private ArrayList<String> mediaList;
     private File mediaFile;
+    public File newList[];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // get a list of new files
+        mediaList = new ArrayList<String>();
+        String sdRoot = Environment.getExternalStorageDirectory().toString();
+        String appRoot = sdRoot + "/Android/data/com.example.media/files";
+        File mediaFolder = new File(appRoot);
+        File tmp[] = mediaFolder.listFiles();
+        Log.v("AAA", String.valueOf(tmp.length));
+        for (int i = 0; i < tmp.length; i++) {
+            Log.v("AAA", tmp[i].getName());
+        }
+        newList = mediaFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".mp3"));
+        Log.v("ZZZ", String.valueOf(newList.length));
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -47,17 +63,10 @@ public class MainActivity extends AppCompatActivity {
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
-        // List unprocessed files on sdcard
-        mediaList = new ArrayList<String>();
-        String sdRoot = Environment.getExternalStorageDirectory().toString();
-        String appRoot = sdRoot + "/SimpleMediaPlayer";
-        File mediaFolder = new File(appRoot);
-        File filesList[] = mediaFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".mp3"));
 
 
         //setListAdapter(new ArrayAdapter<String>(this,
         //        android.R.layout.simple_list_item_1, myList ));
-
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +75,12 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    // interface methods
+    @Override
+    public File[] getNewList() {
+        return newList;
     }
 
     @Override
