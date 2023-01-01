@@ -27,6 +27,7 @@
         <!-- convert this to checkable spinner: https://stackoverflow.com/questions/38417984/android-spinner-dropdown-checkbox -->
 
         <Spinner
+            android:id="@+id/spinner"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:entries="@array/array_name">
