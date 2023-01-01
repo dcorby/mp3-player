@@ -11,4 +11,11 @@
     <string name="hello_process_fragment">Hello process fragment. Arg: %1$s</string>
 
     <string name="search_hint">Search Media...</string>
+
+    <string-array name="array_name">
+        <item>New</item>
+        <item>Music</item>
+        <item>Movies</item>
+        <item>Podcast</item>
+    </string-array>
 </resources>

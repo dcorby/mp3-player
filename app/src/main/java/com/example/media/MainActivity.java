@@ -47,15 +47,13 @@ public class MainActivity extends AppCompatActivity {
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
-        // List _Media files on sdcard
+        // List unprocessed files on sdcard
         mediaList = new ArrayList<String>();
         String sdRoot = Environment.getExternalStorageDirectory().toString();
         String appRoot = sdRoot + "/SimpleMediaPlayer";
         File mediaFolder = new File(appRoot);
         File filesList[] = mediaFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".mp3"));
-        for (int i = 0; i < filesList.length; i++) {
 
-        }
 
         //setListAdapter(new ArrayAdapter<String>(this,
         //        android.R.layout.simple_list_item_1, myList ));
