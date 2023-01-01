@@ -32,7 +32,8 @@ public class HomeFragment extends Fragment {
         receiver = (MainReceiver) getActivity();
 
         final String[] options = { "Foo", "Bar", "Baz" };
-        Spinner spinner = (Spinner) getActivity().findViewById(R.id.spinner);
+        Spinner spinner = binding.spinner;
+        //Spinner spinner = (Spinner) getActivity().findViewById(R.id.spinner);
 
         ArrayList<SpinnerItem> spinnerItems = new ArrayList<>();
 
