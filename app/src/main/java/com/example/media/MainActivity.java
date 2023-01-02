@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements MainReceiver {
     public File newFiles[];
     public ArrayList<MyFile> newMyFiles;
 
+    private DBManager dbManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,17 +66,25 @@ public class MainActivity extends AppCompatActivity implements MainReceiver {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
 
+        dbManager = new DBManager(this, "Files");
+        try {
+            dbManager.open();
+            //dbManager.update(_id, title, desc);
+            dbManager.insert();
+            //Log.v("DBManager success", "OK, inserted.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        //setListAdapter(new ArrayAdapter<String>(this,
-        //        android.R.layout.simple_list_item_1, myList ));
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
+//        binding.fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
     }
 
     // interface methods

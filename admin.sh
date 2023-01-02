@@ -5,3 +5,6 @@ echo "adb shell"
 echo "sudo adb push 52096f49 /sdcard/Android/data/com.example.media/"
 echo "emulator -avd Pixel_XL_API_33"
 
+
+# SQLLite
+# https://stackoverflow.com/questions/18370219/how-to-use-adb-in-android-studio-to-view-an-sqlite-db

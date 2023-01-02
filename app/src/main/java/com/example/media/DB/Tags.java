@@ -6,19 +6,17 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 // https://www.digitalocean.com/community/tutorials/android-sqlite-database-example-tutorial
 // https://developer.android.com/training/data-storage/sqlite
-public class Files extends SQLiteOpenHelper {
+public class Tags extends SQLiteOpenHelper {
 
     static final String DB_NAME = "media.db";
     static final int DB_VERSION = 1;
 
     private static final String CREATE_TABLE = new StringBuilder()
-            .append("CREATE TABLE files (")
-            .append("  id INTEGER PRIMARY KEY AUTOINCREMENT,")
-            .append("  creator TEXT NOT NULL,")
-            .append("  name TEXT NOT NULL")
+            .append("CREATE TABLE tags (")
+            .append("  name TEXT PRIMARY KEY NOT NULL")
             .append(");").toString();
 
-    public Files(Context context) {
+    public Tags(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
@@ -29,7 +27,7 @@ public class Files extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS files");
+        db.execSQL("DROP TABLE IF EXISTS tags");
         onCreate(db);
     }
 }

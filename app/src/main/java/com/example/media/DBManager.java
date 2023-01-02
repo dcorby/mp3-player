@@ -8,6 +8,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 //import com.example.media.DB.*;
 import com.example.media.DB.Files;
+import com.example.media.DB.FilesLists;
+import com.example.media.DB.FilesTags;
+import com.example.media.DB.Lists;
+import com.example.media.DB.ListsTags;
+import com.example.media.DB.Tags;
+
+import java.lang.reflect.InvocationTargetException;
 
 public class DBManager {
 
@@ -23,9 +30,9 @@ public class DBManager {
         table = t;
     }
 
-    public DBManager open() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-        Class cls = Class.forName(table);
-        helper = (SQLiteOpenHelper) cls.newInstance();
+    public DBManager open() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        Class cls = Class.forName("com.example.media.DB." + table);
+        helper = (SQLiteOpenHelper) cls.getDeclaredConstructor(Context.class).newInstance(context);
         database = helper.getWritableDatabase();
         return this;
     }
@@ -34,11 +41,14 @@ public class DBManager {
         helper.close();
     }
 
-    public void insert(String name, String desc) {
+    //public void insert(String name, String desc) {
+    public void insert() {
         ContentValues contentValue = new ContentValues();
-        //contentValue.put(DatabaseHelper.SUBJECT, name);
-        //contentValue.put(DatabaseHelper.DESC, desc);
-        //database.insert(DatabaseHelper.TABLE_NAME, null, contentValue);
+
+
+        contentValue.put("creator", "some creator");
+        contentValue.put("name", "some name");
+        database.insert(table, null, contentValue);
     }
 
     //public Cursor fetch() {
