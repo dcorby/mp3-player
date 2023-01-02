@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import com.example.media.databinding.ActivityMainBinding;
@@ -105,14 +106,21 @@ public class MainActivity extends AppCompatActivity implements MainReceiver {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        //int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        //if (id == R.id.action_settings) {
+        //    return true;
+        //}
 
-        return super.onOptionsItemSelected(item);
+        //return super.onOptionsItemSelected(item);
+
+        // https://developer.android.com/guide/navigation/navigation-ui
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        return NavigationUI.onNavDestinationSelected(item, navController) || super.onOptionsItemSelected(item);
+
+        //NavHostFragment.findNavController(ProcessFragment.this)
+        //        .navigate(R.id.action_ProcessFragment_to_HomeFragment);
     }
 
     @Override

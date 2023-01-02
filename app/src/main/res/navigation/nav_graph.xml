@@ -8,21 +8,27 @@
     <fragment
         android:id="@+id/HomeFragment"
         android:name="com.example.media.HomeFragment"
-        android:label="@string/home_fragment_label"
+        android:label="Home Fragment"
         tools:layout="@layout/fragment_home">
-
         <action
-            android:id="@+id/action_HomeFragment_to_ProcessFragment"
-            app:destination="@id/ProcessFragment" />
+            android:id="@+id/action_HomeFragment_to_NewListFragment"
+            app:destination="@id/fragment_lists" />
+        <action
+            android:id="@+id/action_HomeFragment_to_NewTagFragment"
+            app:destination="@id/fragment_tags" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_lists"
+        android:name="com.example.media.ListsFragment"
+        android:label="Lists Fragment"
+        tools:layout="@layout/fragment_lists">
     </fragment>
     <fragment
-        android:id="@+id/ProcessFragment"
-        android:name="com.example.media.ProcessFragment"
-        android:label="@string/process_fragment_label"
-        tools:layout="@layout/fragment_process">
-
-        <action
-            android:id="@+id/action_ProcessFragment_to_HomeFragment"
-            app:destination="@id/HomeFragment" />
+        android:id="@+id/fragment_tags"
+        android:name="com.example.media.TagsFragment"
+        android:label="Tags Fragment"
+        tools:layout="@layout/fragment_tags">
     </fragment>
+
 </navigation>

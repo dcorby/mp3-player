@@ -10,10 +10,11 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.media.databinding.FragmentProcessBinding;
+import com.example.media.databinding.FragmentTagsBinding;
 
-public class ProcessFragment extends Fragment {
+public class TagsFragment extends Fragment {
 
-    private FragmentProcessBinding binding;
+    private FragmentTagsBinding binding;
 
     @Override
     public View onCreateView(
@@ -21,7 +22,7 @@ public class ProcessFragment extends Fragment {
             Bundle savedInstanceState
     ) {
 
-        binding = FragmentProcessBinding.inflate(inflater, container, false);
+        binding = FragmentTagsBinding.inflate(inflater, container, false);
         return binding.getRoot();
 
     }
