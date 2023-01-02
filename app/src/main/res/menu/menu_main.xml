@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.media.MainActivity">
     <item
-        android:id="@+id/fragment_lists"
+        android:id="@+id/ListsGraph"
         android:orderInCategory="100"
         android:title="Lists"
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/fragment_tags"
+        android:id="@+id/TagsGraph"
         android:orderInCategory="100"
         android:title="Tags"
         app:showAsAction="never" />

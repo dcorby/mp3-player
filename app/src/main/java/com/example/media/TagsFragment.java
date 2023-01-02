@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.media.databinding.FragmentProcessBinding;
 import com.example.media.databinding.FragmentTagsBinding;
 
 public class TagsFragment extends Fragment {
@@ -30,13 +29,18 @@ public class TagsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        binding.buttonSecond.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                NavHostFragment.findNavController(ProcessFragment.this)
-//                        .navigate(R.id.action_ProcessFragment_to_HomeFragment);
-//            }
-//        });
+        binding.addtag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(getContext(), "Tags!", Toast.LENGTH_SHORT).show();
+                //NavHostFragment.findNavController(TagsFragment.this)
+                //        .navigate(R.id.action_TagsFragment_to_AddTagFragment);
+                //Navigation.findNavController(view).navigate(R.id.viewTransactionsAction);
+                NavHostFragment.findNavController(TagsFragment.this)
+                        .navigate(R.id.action_TagsFragment_to_AddTagFragment);
+
+            }
+        });
     }
 
     @Override

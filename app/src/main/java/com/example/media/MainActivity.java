@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements MainReceiver {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
 
+        /*
         dbManager = new DBManager(this, "Files");
         try {
             dbManager.open();
@@ -76,6 +77,8 @@ public class MainActivity extends AppCompatActivity implements MainReceiver {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        */
+
 
 
 

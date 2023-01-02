@@ -4,49 +4,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TagsFragment">
+    tools:context=".AddTagFragment">
 
     <EditText
-        android:id="@+id/tagsearch"
+        android:id="@+id/field1"
         android:layout_width="0dp"
         android:layout_height="50dp"
         app:layout_constraintWidth_percent="0.80"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/addtag"
         android:layout_marginTop="50dp"
-        android:hint="Search..."
+        android:hint="Field1"
         android:padding="10dp"
         android:background="@color/light_green"/>
 
-    <!-- add tag button -->
-    <Button
-        android:id="@+id/addtag"
+    <EditText
+        android:id="@+id/field2"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        app:layout_constraintWidth_percent="0.80"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/field1"
+        android:layout_marginTop="20dp"
+        android:hint="Field2"
         android:padding="10dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintWidth_percent="0.80"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tagsearch"
-        app:layout_constraintBottom_toTopOf="@id/taglist"
-        android:background="@color/purple_500"
-        android:text="Add Tag">
-    </Button>
+        android:background="@color/light_green"/>
 
-    <ListView
-        android:id="@+id/taglist"
+    <EditText
+        android:id="@+id/field3"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="50dp"
         app:layout_constraintWidth_percent="0.80"
-        android:text="tags"
-        android:background="@color/light_blue"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="50dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/addtag" />
+        app:layout_constraintTop_toBottomOf="@id/field2"
+        android:layout_marginTop="20dp"
+        android:hint="Field3"
+        android:padding="10dp"
+        android:background="@color/light_green"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
