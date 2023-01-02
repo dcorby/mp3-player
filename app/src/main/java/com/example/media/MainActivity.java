@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements MainReceiver {
         File mediaFolder = new File(appRoot);
         File tmp[] = mediaFolder.listFiles();
         newFiles = mediaFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".mp3"));
+        newMyFiles = new ArrayList<MyFile>();
         for (int i = 0; i < newFiles.length; i++) {
             newMyFiles.add(new MyFile(newFiles[i].getAbsolutePath(), true));
         }

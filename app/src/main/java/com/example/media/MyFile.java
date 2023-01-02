@@ -11,6 +11,7 @@ public class MyFile extends File {
 
     @Override
     public String toString() {
-        return this.getAbsolutePath();
+        //return this.getAbsolutePath();
+        return this.getName();
     }
 }

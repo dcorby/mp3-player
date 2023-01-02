@@ -1,17 +1,20 @@
 package com.example.media;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -26,6 +29,7 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     public MainReceiver receiver;
+    public ArrayAdapter arrayAdapter;
 
     @Override
     public View onCreateView(
@@ -52,14 +56,36 @@ public class HomeFragment extends Fragment {
 
         ArrayList<MyFile> newMyFiles = receiver.getNewMyFiles();
 
+
         if (newMyFiles.size() > 0) {
             View tag = inflater.inflate(R.layout.tag, null);
             TextView textView = tag.findViewById(R.id.text);
             textView.setText("New");
             binding.tagholder.addView(tag);
-            ArrayAdapter adapter = new ArrayAdapter<MyFile>(getActivity(), R.layout.mediaitem, newMyFiles);
-            binding.medialist.setAdapter(adapter);
+            arrayAdapter = new ArrayAdapter<MyFile>(getActivity(), R.layout.mediaitem, newMyFiles);
+            binding.medialist.setAdapter(arrayAdapter);
         }
+
+        binding.medialist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                MyFile myFile = newMyFiles.get(i);
+
+                String s;
+                if (myFile.is_new) {
+                    s = "is new";
+                } else {
+                    s = "is not new";
+                }
+
+                Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
+
+
+                //Intent intent = new Intent(Activity.this, destinationActivity.class);
+                //based on item add info to intent
+                //startActivity(intent);
+            }
+        });
 
         return binding.getRoot();
     }
