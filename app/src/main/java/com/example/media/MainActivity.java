@@ -25,6 +25,7 @@ import com.example.media.MainReceiver;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.example.media.MyFile;
@@ -38,7 +39,9 @@ public class MainActivity extends AppCompatActivity implements MainReceiver {
     public File newFiles[];
     public ArrayList<MyFile> newMyFiles;
 
-    private DBManager dbManager;
+    public Map<String, DBManager> dbManagers;
+    //public DBManager dbManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +69,10 @@ public class MainActivity extends AppCompatActivity implements MainReceiver {
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
-
+        dbManagers = new HashMap<String, DBManager>();
+        initDBManagers();
+        //dbManager = new DBManager(this, "Files");
         /*
-        dbManager = new DBManager(this, "Files");
         try {
             dbManager.open();
             //dbManager.update(_id, title, desc);
@@ -91,10 +95,22 @@ public class MainActivity extends AppCompatActivity implements MainReceiver {
 //        });
     }
 
+    private void initDBManagers() {
+        String dbs[] = { "Files", "FilesLists", "FilesTags", "Lists", "ListsLists", "ListsTags", "Tags" };
+        for (int i = 0; i < dbs.length; i++) {
+            DBManager dbManager = new DBManager(this, dbs[i]);
+            dbManagers.put(dbs[i], dbManager);
+        }
+    }
+
     // interface methods
     @Override
     public ArrayList<MyFile> getNewMyFiles() {
         return newMyFiles;
+    }
+    @Override
+    public DBManager getDBManager(String db) {
+        return dbManagers.get(db);
     }
 
     @Override

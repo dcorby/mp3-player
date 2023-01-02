@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
-    public MainReceiver receiver;
+    private MainReceiver receiver;
     public ArrayAdapter arrayAdapter;
 
     @Override
@@ -47,7 +47,6 @@ public class HomeFragment extends Fragment {
         spinner.setAdapter(customAdapter);
 
         ArrayList<MyFile> newMyFiles = receiver.getNewMyFiles();
-
 
         if (newMyFiles.size() > 0) {
             View tag = inflater.inflate(R.layout.tag, null);
