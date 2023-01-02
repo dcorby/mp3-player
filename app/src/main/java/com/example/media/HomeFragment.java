@@ -7,6 +7,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -16,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import com.example.media.databinding.FragmentHomeBinding;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
@@ -46,14 +50,15 @@ public class HomeFragment extends Fragment {
         CustomAdapter customAdapter = new CustomAdapter(getActivity(), 0, spinnerItems);
         spinner.setAdapter(customAdapter);
 
-        File newList[] = receiver.getNewList();
+        ArrayList<MyFile> newMyFiles = receiver.getNewMyFiles();
 
-        //Log.v("YYY", String.valueOf(newList.length));
-        if (newList.length > 0) {
+        if (newMyFiles.size() > 0) {
             View tag = inflater.inflate(R.layout.tag, null);
             TextView textView = tag.findViewById(R.id.text);
             textView.setText("New");
             binding.tagholder.addView(tag);
+            ArrayAdapter adapter = new ArrayAdapter<MyFile>(getActivity(), R.layout.mediaitem, newMyFiles);
+            binding.medialist.setAdapter(adapter);
         }
 
         return binding.getRoot();

@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import com.example.media.MyFile;
 
 
 public class MainActivity extends AppCompatActivity implements MainReceiver {
@@ -33,26 +34,24 @@ public class MainActivity extends AppCompatActivity implements MainReceiver {
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
 
-    private ArrayList<String> mediaList;
-    private File mediaFile;
-    public File newList[];
+    public File newFiles[];
+    public ArrayList<MyFile> newMyFiles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // get a list of new files
-        mediaList = new ArrayList<String>();
+        //mediaList = new ArrayList<String>();
         String sdRoot = Environment.getExternalStorageDirectory().toString();
         String appRoot = sdRoot + "/Android/data/com.example.media/files";
         File mediaFolder = new File(appRoot);
         File tmp[] = mediaFolder.listFiles();
-        Log.v("AAA", String.valueOf(tmp.length));
-        for (int i = 0; i < tmp.length; i++) {
-            Log.v("AAA", tmp[i].getName());
+        newFiles = mediaFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".mp3"));
+        for (int i = 0; i < newFiles.length; i++) {
+            newMyFiles.add(new MyFile(newFiles[i].getAbsolutePath(), true));
         }
-        newList = mediaFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".mp3"));
-        Log.v("ZZZ", String.valueOf(newList.length));
+        newFiles = null;
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -79,8 +78,8 @@ public class MainActivity extends AppCompatActivity implements MainReceiver {
 
     // interface methods
     @Override
-    public File[] getNewList() {
-        return newList;
+    public ArrayList<MyFile> getNewMyFiles() {
+        return newMyFiles;
     }
 
     @Override
