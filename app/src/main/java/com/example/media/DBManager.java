@@ -22,18 +22,16 @@ public class DBManager {
 
     private SQLiteOpenHelper helper;
     private Context context;
-    private String table;
     private SQLiteDatabase database;
 
-    public DBManager(Context c, String t) {
+    public DBManager(Context c) {
         context = c;
-        table = t;
     }
 
-    public DBManager open() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-        Class cls = Class.forName("com.example.media.DB." + table);
-        helper = (SQLiteOpenHelper) cls.getDeclaredConstructor(Context.class).newInstance(context);
-        database = helper.getWritableDatabase(); // this will call instances' onopen()
+    public DBManager open() throws SQLException {
+        helper = new DBHelper(context);
+        // this will call oncreate()/onopen()
+        database = helper.getWritableDatabase();
         return this;
     }
 
@@ -41,9 +39,8 @@ public class DBManager {
         helper.close();
     }
 
-    public long insert(ContentValues contentValues) throws SQLiteConstraintException {
+    public long insert(String table, ContentValues contentValues) throws SQLiteConstraintException {
         // https://stackoverflow.com/questions/3421577/sqliteconstraintexception-not-caught
-        //database.insert(table, null, contentValues);
         long id = database.insertOrThrow(table, null, contentValues);
         return id;
     }
@@ -83,14 +80,6 @@ public class DBManager {
         database.endTransaction();
     }
 
-    //public Cursor fetch() {
-        //String[] columns = new String[] { DatabaseHelper._ID, DatabaseHelper.SUBJECT, DatabaseHelper.DESC };
-        //Cursor cursor = database.query(DatabaseHelper.TABLE_NAME, columns, null, null, null, null, null);
-        //if (cursor != null) {
-        //    cursor.moveToFirst();
-        //}
-        //return cursor;
-    //}
 
     //public int update(long _id, String name, String desc) {
         //ContentValues contentValues = new ContentValues();

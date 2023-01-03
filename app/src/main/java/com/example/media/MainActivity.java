@@ -2,55 +2,34 @@ package com.example.media;
 
 import android.database.SQLException;
 import android.os.Bundle;
-import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Environment;
-import android.util.Log;
-import android.view.View;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import com.example.media.databinding.ActivityMainBinding;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-
-import com.example.media.Utils;
-import com.example.media.MainReceiver;
-
-//import org.apache.commons.io.IOUtils;
-
 import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import com.example.media.MyFile;
 
 
 public class MainActivity extends AppCompatActivity implements MainReceiver {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
-
     public File newFiles[];
     public ArrayList<MyFile> newMyFiles;
-
-    public Map<String, DBManager> dbManagers;
-    //public DBManager dbManager;
-
+    public DBManager dbManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // get a list of new files
-        //mediaList = new ArrayList<String>();
         String sdRoot = Environment.getExternalStorageDirectory().toString();
         String appRoot = sdRoot + "/Android/data/com.example.media/files";
         File mediaFolder = new File(appRoot);
@@ -71,45 +50,16 @@ public class MainActivity extends AppCompatActivity implements MainReceiver {
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
-        dbManagers = new HashMap<String, DBManager>();
-
         try {
-            initDBManagers();
+            initDBManager();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        //dbManager = new DBManager(this, "Files");
-        /*
-        try {
-            dbManager.open();
-            //dbManager.update(_id, title, desc);
-            dbManager.insert();
-            //Log.v("DBManager success", "OK, inserted.");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        */
-
-
-
-
-//        binding.fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
     }
 
-    private void initDBManagers() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-        String dbs[] = { "Files", "FilesLists", "FilesTags", "Lists", "ListsLists", "ListsTags", "Tags" };
-        for (int i = 0; i < dbs.length; i++) {
-            DBManager dbManager = new DBManager(this, dbs[i]);
-            dbManager.open();
-            dbManagers.put(dbs[i], dbManager);
-        }
+    private void initDBManager() throws SQLException {
+        dbManager = new DBManager(this);
+        dbManager.open();
     }
 
     // interface methods
@@ -118,8 +68,8 @@ public class MainActivity extends AppCompatActivity implements MainReceiver {
         return newMyFiles;
     }
     @Override
-    public DBManager getDBManager(String db) {
-        return dbManagers.get(db);
+    public DBManager getDBManager() {
+        return dbManager;
     }
 
     @Override

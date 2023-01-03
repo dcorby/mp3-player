@@ -7,5 +7,5 @@ import com.example.media.MyFile;
 
 public interface MainReceiver {
     ArrayList<MyFile> getNewMyFiles();
-    DBManager getDBManager(String db);
+    DBManager getDBManager();
 }

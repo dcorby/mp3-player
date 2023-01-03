@@ -62,12 +62,12 @@ public class AddTagFragment extends Fragment {
                 return;
             }
             if (dbManager == null) {
-                dbManager = receiver.getDBManager("Tags");
+                dbManager = receiver.getDBManager();
             }
             ContentValues contentValues = new ContentValues();
             contentValues.put("name", name);
             try {
-                dbManager.insert(contentValues);
+                dbManager.insert("tags", contentValues);
                 Toast.makeText(getContext(), "Tag added!", Toast.LENGTH_SHORT).show();
                 NavHostFragment.findNavController(AddTagFragment.this).popBackStack();
             } catch(SQLiteConstraintException e) {

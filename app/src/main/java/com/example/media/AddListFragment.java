@@ -61,12 +61,12 @@ public class AddListFragment extends Fragment {
                 return;
             }
             if (dbManager == null) {
-                dbManager = receiver.getDBManager("Lists");
+                dbManager = receiver.getDBManager();
             }
             ContentValues contentValues = new ContentValues();
             contentValues.put("name", name);
             try {
-                dbManager.insert(contentValues);
+                dbManager.insert("lists", contentValues);
                 Toast.makeText(getContext(), "List added!", Toast.LENGTH_SHORT).show();
                 NavHostFragment.findNavController(AddListFragment.this).popBackStack();
             } catch(SQLiteConstraintException e) {

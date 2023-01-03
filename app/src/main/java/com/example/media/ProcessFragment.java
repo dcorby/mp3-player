@@ -27,11 +27,7 @@ public class ProcessFragment extends Fragment {
     public ArrayAdapter tagsAdapter;
     public ArrayAdapter listsAdapter;
     private MainReceiver receiver;
-    private DBManager tagsManager;
-    private DBManager listsManager;
-    private DBManager filesManager;
-    private DBManager filesListsManager;
-    private DBManager filesTagsManager;
+    private DBManager dbManager;
     private LayoutInflater layoutInflater;
 
     @Override
@@ -56,15 +52,12 @@ public class ProcessFragment extends Fragment {
         binding.processName.setText(myFile.getName());
         binding.processName.setEnabled(false);
 
-        if (tagsManager == null) {
-            tagsManager = receiver.getDBManager("Tags");
-        }
-        if (listsManager == null) {
-            listsManager = receiver.getDBManager("Lists");
+        if (dbManager == null) {
+            dbManager = receiver.getDBManager();
         }
 
-        ArrayList<HashMap> tagsList = tagsManager.fetch("SELECT * FROM tags", null);
-        ArrayList<HashMap> listsList = listsManager.fetch("SELECT * FROM lists", null);
+        ArrayList<HashMap> tagsList = dbManager.fetch("SELECT * FROM tags", null);
+        ArrayList<HashMap> listsList = dbManager.fetch("SELECT * FROM lists", null);
 
         ArrayList<String> tagsNames = new ArrayList<>(Arrays.asList("Tags"));
         ArrayList<String> listsNames = new ArrayList<>(Arrays.asList("Lists"));
@@ -127,20 +120,13 @@ public class ProcessFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 try {
-                    // get the db managers
-                    filesManager = receiver.getDBManager("Files");
-                    filesTagsManager = receiver.getDBManager("FilesTags");
-                    filesListsManager = receiver.getDBManager("FilesLists");
-
                     // begin transactions
-                    filesManager.beginTransaction();
-                    filesTagsManager.beginTransaction();
-                    //filesListsManager.beginTransaction();
+                    dbManager.beginTransaction();
 
                     // insert the file
                     ContentValues filesValues = new ContentValues();
                     filesValues.put("name", dataName);
-                    long id = filesManager.insert(filesValues);
+                    long id = dbManager.insert("files", filesValues);
 
                     // insert filestags
                     if (dataTags.size() > 0) {
@@ -148,7 +134,7 @@ public class ProcessFragment extends Fragment {
                             ContentValues filesTagsValues = new ContentValues();
                             filesTagsValues.put("file", id);
                             filesTagsValues.put("tag", dataTags.get(i));
-                            filesTagsManager.insert(filesTagsValues);
+                            dbManager.insert("filestags", filesTagsValues);
                         }
                     }
 
@@ -158,13 +144,11 @@ public class ProcessFragment extends Fragment {
                             ContentValues filesListsValues = new ContentValues();
                             filesListsValues.put("file", id);
                             filesListsValues.put("list", dataLists.get(i));
-                            filesTagsManager.insert(filesListsValues);
+                            dbManager.insert("fileslists", filesListsValues);
                         }
                     }
 
-                    filesManager.commitTransaction();
-                    //filesTagsManager.commitTransaction();
-                    //filesListsManager.commitTransaction();
+                    dbManager.commitTransaction();
                     Toast.makeText(getContext(), "File processed!", Toast.LENGTH_SHORT).show();
                     NavHostFragment.findNavController(ProcessFragment.this).popBackStack();
 
@@ -172,9 +156,7 @@ public class ProcessFragment extends Fragment {
                     Toast.makeText(getContext(), "Error processing file", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 } finally {
-                    filesManager.endTransaction();
-                    //filesTagsManager.endTransaction();
-                    //filesListsManager.endTransaction();
+                    dbManager.endTransaction();
                 }
             }
         });
