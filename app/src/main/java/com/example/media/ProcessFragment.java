@@ -10,13 +10,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
-
 import com.example.media.databinding.FragmentProcessBinding;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -29,6 +29,7 @@ public class ProcessFragment extends Fragment {
     private MainReceiver receiver;
     private DBManager dbManager;
     private LayoutInflater layoutInflater;
+    private MyFile myFile;
 
     @Override
     public View onCreateView(
@@ -48,7 +49,7 @@ public class ProcessFragment extends Fragment {
         }
 
         Integer idx = getArguments().getInt("myIdx");
-        MyFile myFile = receiver.getNewMyFiles().get(idx);
+        myFile = receiver.getNewMyFiles().get(idx);
         binding.processName.setText(myFile.getName());
         binding.processName.setEnabled(false);
 
@@ -148,6 +149,8 @@ public class ProcessFragment extends Fragment {
                         }
                     }
 
+                    String newPath = myFile.getParent() + "/processed/" + String.valueOf(id) + "." + myFile.ext;
+                    myFile.renameTo(new File(newPath));
                     dbManager.commitTransaction();
                     Toast.makeText(getContext(), "File processed!", Toast.LENGTH_SHORT).show();
                     NavHostFragment.findNavController(ProcessFragment.this).popBackStack();
