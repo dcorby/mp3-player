@@ -13,7 +13,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
-
 import com.example.media.databinding.FragmentAddtagBinding;
 
 public class AddTagFragment extends Fragment {

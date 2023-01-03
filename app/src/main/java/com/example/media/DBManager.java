@@ -7,14 +7,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import com.example.media.DB.Files;
-import com.example.media.DB.FilesLists;
-import com.example.media.DB.FilesTags;
-import com.example.media.DB.Lists;
-import com.example.media.DB.ListsTags;
-import com.example.media.DB.Tags;
-
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -79,8 +71,7 @@ public class DBManager {
     public void endTransaction() {
         database.endTransaction();
     }
-
-
+    
     //public int update(long _id, String name, String desc) {
         //ContentValues contentValues = new ContentValues();
         //contentValues.put(DatabaseHelper.SUBJECT, name);
