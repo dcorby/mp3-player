@@ -7,7 +7,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 import com.example.media.DB.Files;
 import com.example.media.DB.FilesLists;
 import com.example.media.DB.FilesTags;
@@ -18,7 +17,6 @@ import com.example.media.DB.Tags;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class DBManager {
 
@@ -43,10 +41,11 @@ public class DBManager {
         helper.close();
     }
 
-    public void insert(ContentValues contentValues) throws SQLiteConstraintException {
+    public long insert(ContentValues contentValues) throws SQLiteConstraintException {
         // https://stackoverflow.com/questions/3421577/sqliteconstraintexception-not-caught
         //database.insert(table, null, contentValues);
-        database.insertOrThrow(table, null, contentValues);
+        long id = database.insertOrThrow(table, null, contentValues);
+        return id;
     }
 
     // https://stackoverflow.com/questions/6293063/identifying-datatype-of-a-column-in-an-sqlite-android-cursor
@@ -72,6 +71,16 @@ public class DBManager {
             arrayList.add(row);
         }
         return arrayList;
+    }
+
+    public void beginTransaction() {
+        database.beginTransaction();
+    }
+    public void commitTransaction() {
+        database.setTransactionSuccessful();
+    }
+    public void endTransaction() {
+        database.endTransaction();
     }
 
     //public Cursor fetch() {
