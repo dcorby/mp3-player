@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 //import com.example.media.DB.*;
 import com.example.media.DB.Files;
 import com.example.media.DB.FilesLists;
@@ -33,7 +34,7 @@ public class DBManager {
     public DBManager open() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         Class cls = Class.forName("com.example.media.DB." + table);
         helper = (SQLiteOpenHelper) cls.getDeclaredConstructor(Context.class).newInstance(context);
-        database = helper.getWritableDatabase();
+        database = helper.getWritableDatabase(); // this will call instances' onopen()
         return this;
     }
 
@@ -41,14 +42,8 @@ public class DBManager {
         helper.close();
     }
 
-    //public void insert(String name, String desc) {
-    public void insert() {
-        ContentValues contentValue = new ContentValues();
-
-
-        contentValue.put("creator", "some creator");
-        contentValue.put("name", "some name");
-        database.insert(table, null, contentValue);
+    public void insert(ContentValues contentValues) {
+        database.insert(table, null, contentValues);
     }
 
     //public Cursor fetch() {

@@ -17,6 +17,10 @@
         android:layout_marginTop="50dp"
         android:hint="Name"
         android:padding="10dp"
+        android:inputType="text"
+        android:imeOptions="actionDone"
+        android:singleLine="true"
+        android:maxLines="1"
         android:background="@color/light_green"/>
 
     <Button

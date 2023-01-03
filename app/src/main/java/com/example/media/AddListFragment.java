@@ -1,9 +1,14 @@
 package com.example.media;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -13,25 +18,62 @@ public class AddListFragment extends Fragment {
 
     private FragmentAddlistBinding binding;
     private MainReceiver receiver;
+    private DBManager dbManager;
 
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
+        receiver = (MainReceiver) getActivity();
         binding = FragmentAddlistBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        binding.name.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    insertName();
+                    return true;
+                }
+                return false;
+            }
+        });
+
         binding.add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DBManager dbManager = receiver.getDBManager("Lists");
-                //Toast.makeText(getContext(), "Lists!", Toast.LENGTH_SHORT).show();
+                insertName();
             }
         });
+    }
+
+    private void insertName() {
+        try {
+            String name = binding.name.getText().toString().trim();
+            if (name.length() == 0) {
+                Toast.makeText(getContext(), "Add a value", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (dbManager == null) {
+                dbManager = receiver.getDBManager("Lists");
+            }
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("name", name);
+            try {
+                dbManager.insert(contentValues);
+                Toast.makeText(getContext(), "List added!", Toast.LENGTH_SHORT).show();
+            } catch(SQLiteConstraintException e) {
+                Toast.makeText(getContext(), "List already exists!", Toast.LENGTH_SHORT).show();
+            }
+        } catch(Exception e) {
+            Toast.makeText(getContext(), "Error adding list", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
     }
 
     @Override

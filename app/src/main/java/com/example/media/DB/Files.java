@@ -12,14 +12,19 @@ public class Files extends SQLiteOpenHelper {
     static final int DB_VERSION = 1;
 
     private static final String CREATE_TABLE = new StringBuilder()
-            .append("CREATE TABLE files (")
+            .append("CREATE TABLE IF NOT EXISTS files (")
             .append("  id INTEGER PRIMARY KEY AUTOINCREMENT,")
-            .append("  creator TEXT NOT NULL,")
-            .append("  name TEXT NOT NULL")
+            .append("  name TEXT NOT NULL,")
+            .append("  creator TEXT")
             .append(");").toString();
 
     public Files(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
+    }
+
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        db.execSQL(CREATE_TABLE);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.media;
 
+import android.database.SQLException;
 import android.os.Bundle;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +25,7 @@ import com.example.media.MainReceiver;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,7 +72,13 @@ public class MainActivity extends AppCompatActivity implements MainReceiver {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
         dbManagers = new HashMap<String, DBManager>();
-        initDBManagers();
+
+        try {
+            initDBManagers();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         //dbManager = new DBManager(this, "Files");
         /*
         try {
@@ -95,10 +103,11 @@ public class MainActivity extends AppCompatActivity implements MainReceiver {
 //        });
     }
 
-    private void initDBManagers() {
+    private void initDBManagers() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         String dbs[] = { "Files", "FilesLists", "FilesTags", "Lists", "ListsLists", "ListsTags", "Tags" };
         for (int i = 0; i < dbs.length; i++) {
             DBManager dbManager = new DBManager(this, dbs[i]);
+            dbManager.open();
             dbManagers.put(dbs[i], dbManager);
         }
     }

@@ -8,3 +8,11 @@ echo "emulator -avd Pixel_XL_API_33"
 
 # SQLLite
 # https://stackoverflow.com/questions/18370219/how-to-use-adb-in-android-studio-to-view-an-sqlite-db
+echo "SQLLite"
+echo "adb shell"
+echo "su (first thing you do)"
+echo "run-as com.example.media"
+echo "cd data/data/com.example.media/databases/"
+echo "sqlite3 <your-db-name>.db"
+echo ".tables"
+echo ".schema tablename"

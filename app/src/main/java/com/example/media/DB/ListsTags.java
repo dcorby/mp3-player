@@ -12,13 +12,18 @@ public class ListsTags extends SQLiteOpenHelper {
     static final int DB_VERSION = 1;
 
     private static final String CREATE_TABLE = new StringBuilder()
-            .append("CREATE TABLE liststags (")
-            .append("  name TEXT PRIMARY KEY NOT NULL")
-            .append("  typ TEXT")  // e.g. "Album", "Mix", etc. (can be null)
+            .append("CREATE TABLE IF NOT EXISTS liststags (")
+            .append("  list TEXT PRIMARY KEY NOT NULL,")
+            .append("  tag TEXT NOT NULL")
             .append(");").toString();
 
     public ListsTags(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
+    }
+
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        db.execSQL(CREATE_TABLE);
     }
 
     @Override

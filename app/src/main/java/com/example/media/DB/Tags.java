@@ -3,6 +3,7 @@ package com.example.media.DB;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 // https://www.digitalocean.com/community/tutorials/android-sqlite-database-example-tutorial
 // https://developer.android.com/training/data-storage/sqlite
@@ -12,12 +13,17 @@ public class Tags extends SQLiteOpenHelper {
     static final int DB_VERSION = 1;
 
     private static final String CREATE_TABLE = new StringBuilder()
-            .append("CREATE TABLE tags (")
+            .append("CREATE TABLE IF NOT EXISTS tags (")
             .append("  name TEXT PRIMARY KEY NOT NULL")
             .append(");").toString();
 
     public Tags(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
+    }
+
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        db.execSQL(CREATE_TABLE);
     }
 
     @Override
