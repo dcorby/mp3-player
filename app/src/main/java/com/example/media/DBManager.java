@@ -16,6 +16,9 @@ import com.example.media.DB.ListsTags;
 import com.example.media.DB.Tags;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class DBManager {
 
@@ -46,7 +49,31 @@ public class DBManager {
         database.insertOrThrow(table, null, contentValues);
     }
 
-    // Cursor c = db.rawQuery(select, null);
+    // https://stackoverflow.com/questions/6293063/identifying-datatype-of-a-column-in-an-sqlite-android-cursor
+    public ArrayList<HashMap> fetch(String query, String[] args) {
+        Cursor cursor = database.rawQuery(query, args);
+        int columns = cursor.getColumnCount();
+        ArrayList<HashMap> arrayList = new ArrayList();
+        while (cursor.moveToNext()) {
+            HashMap row = new HashMap(columns);
+            for (int i = 0; i <= columns; i++) {
+                switch (cursor.getType(i))  {
+                    case Cursor.FIELD_TYPE_FLOAT:
+                        row.put(cursor.getColumnName(i), cursor.getFloat(i));
+                        break;
+                    case Cursor.FIELD_TYPE_INTEGER:
+                        row.put(cursor.getColumnName(i), cursor.getInt(i));
+                        break;
+                    case Cursor.FIELD_TYPE_STRING:
+                        row.put(cursor.getColumnName(i), cursor.getString(i));
+                        break;
+                }
+            }
+            arrayList.add(row);
+        }
+        return arrayList;
+    }
+
     //public Cursor fetch() {
         //String[] columns = new String[] { DatabaseHelper._ID, DatabaseHelper.SUBJECT, DatabaseHelper.DESC };
         //Cursor cursor = database.query(DatabaseHelper.TABLE_NAME, columns, null, null, null, null, null);
