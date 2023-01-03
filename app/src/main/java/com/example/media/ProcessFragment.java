@@ -151,7 +151,6 @@ public class ProcessFragment extends Fragment {
                     dbManager.commitTransaction();
                     Toast.makeText(getContext(), "File processed!", Toast.LENGTH_SHORT).show();
                     NavHostFragment.findNavController(ProcessFragment.this).popBackStack();
-
                 } catch(Exception e) {
                     Toast.makeText(getContext(), "Error processing file", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();

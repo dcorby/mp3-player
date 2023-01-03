@@ -71,7 +71,7 @@ public class DBManager {
     public void endTransaction() {
         database.endTransaction();
     }
-    
+
     //public int update(long _id, String name, String desc) {
         //ContentValues contentValues = new ContentValues();
         //contentValues.put(DatabaseHelper.SUBJECT, name);
