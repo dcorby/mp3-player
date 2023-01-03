@@ -12,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
+
 import com.example.media.databinding.FragmentAddtagBinding;
 
 public class AddTagFragment extends Fragment {
@@ -67,6 +69,7 @@ public class AddTagFragment extends Fragment {
             try {
                 dbManager.insert(contentValues);
                 Toast.makeText(getContext(), "Tag added!", Toast.LENGTH_SHORT).show();
+                NavHostFragment.findNavController(AddTagFragment.this).popBackStack();
             } catch(SQLiteConstraintException e) {
                 Toast.makeText(getContext(), "Tag already exists!", Toast.LENGTH_SHORT).show();
             }
