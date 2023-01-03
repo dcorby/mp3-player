@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.media.databinding.FragmentHomeBinding;
 
@@ -62,19 +63,15 @@ public class HomeFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 MyFile myFile = newMyFiles.get(i);
 
-                String s;
                 if (myFile.is_new) {
-                    s = "is new";
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("myIdx", i);
+                    NavHostFragment.findNavController(HomeFragment.this)
+                            .navigate(R.id.action_HomeFragment_to_ProcessFragment, bundle);
                 } else {
-                    s = "is not new";
+                    String s = "is not new";
+                    Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
                 }
-
-                Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
-
-
-                //Intent intent = new Intent(Activity.this, destinationActivity.class);
-                //based on item add info to intent
-                //startActivity(intent);
             }
         });
 
@@ -83,8 +80,6 @@ public class HomeFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        //binding.tagholder
 
 //        binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
 //            @Override

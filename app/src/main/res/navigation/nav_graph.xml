@@ -16,6 +16,10 @@
         <action
             android:id="@+id/action_HomeFragment_to_TagsGraph"
             app:destination="@id/TagsGraph" />
+
+        <action
+            android:id="@+id/action_HomeFragment_to_ProcessFragment"
+            app:destination="@id/ProcessFragment" />
     </fragment>
 
 
@@ -51,7 +55,6 @@
         </fragment>
     </navigation>
 
-
     <navigation
         android:id="@+id/TagsGraph"
         app:startDestination="@id/TagsFragment">
@@ -83,5 +86,16 @@
             tools:layout="@layout/fragment_edittag">
         </fragment>
     </navigation>
+
+    <fragment
+        android:id="@+id/ProcessFragment"
+        android:name="com.example.media.ProcessFragment"
+        android:label="Process Fragment"
+        tools:layout="@layout/fragment_process">
+        <argument
+            android:name="myIdx"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
 
 </navigation>

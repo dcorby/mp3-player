@@ -7,10 +7,21 @@
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
 
-    <!-- FlexboxLayout for tags -->
+    <Spinner
+        android:id="@+id/spinner"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tagholder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.80"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:entries="@array/array_name">
+    </Spinner>
+
     <com.google.android.flexbox.FlexboxLayout
         android:id="@+id/tagholder"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spinner"
         app:layout_constraintBottom_toTopOf="@id/filter"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,91 +32,8 @@
         app:showDivider="beginning|middle"
         app:dividerDrawable="@drawable/divider"
         android:paddingStart="20dp"
-        android:paddingEnd="10dp"
-        android:hint="@string/search_hint">
-
-        <!-- convert this to checkable spinner: https://stackoverflow.com/questions/38417984/android-spinner-dropdown-checkbox -->
-
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:entries="@array/array_name">
-        </Spinner>
-        <!--
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/pink">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New"
-                android:padding="5dp">
-            </TextView>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="x"
-                android:padding="5dp">
-            </TextView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/pink">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Music"
-                android:padding="5dp">
-            </TextView>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="x"
-                android:padding="5dp">
-            </TextView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/pink">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Movies"
-                android:padding="5dp">
-            </TextView>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="x"
-                android:padding="5dp">
-            </TextView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:background="@color/pink">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Podcasts"
-                android:padding="5dp">
-            </TextView>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="x"
-                android:padding="5dp">
-            </TextView>
-        </LinearLayout>
-        -->
+        android:paddingEnd="10dp" >
+        <!-- tags -->
     </com.google.android.flexbox.FlexboxLayout>
 
     <EditText

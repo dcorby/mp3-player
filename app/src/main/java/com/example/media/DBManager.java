@@ -20,9 +20,7 @@ import java.lang.reflect.InvocationTargetException;
 public class DBManager {
 
     private SQLiteOpenHelper helper;
-
     private Context context;
-
     private String table;
     private SQLiteDatabase database;
 
@@ -48,6 +46,7 @@ public class DBManager {
         database.insertOrThrow(table, null, contentValues);
     }
 
+    // Cursor c = db.rawQuery(select, null);
     //public Cursor fetch() {
         //String[] columns = new String[] { DatabaseHelper._ID, DatabaseHelper.SUBJECT, DatabaseHelper.DESC };
         //Cursor cursor = database.query(DatabaseHelper.TABLE_NAME, columns, null, null, null, null, null);
