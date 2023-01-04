@@ -20,6 +20,22 @@
         <action
             android:id="@+id/action_HomeFragment_to_ProcessFragment"
             app:destination="@id/ProcessFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_to_EditFileFragment"
+            app:destination="@id/EditFileFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_to_ListFragment"
+            app:destination="@id/ListFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ListFragment"
+        android:name="com.example.media.ListFragment"
+        android:label="List Fragment"
+        tools:layout="@layout/fragment_list">
+        <action
+            android:id="@+id/action_ListFragment_to_EditFileFragment"
+            app:destination="@id/EditFileFragment" />
     </fragment>
 
 
@@ -92,6 +108,17 @@
         android:name="com.example.media.ProcessFragment"
         android:label="Process Fragment"
         tools:layout="@layout/fragment_process">
+        <argument
+            android:name="myIdx"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/EditFileFragment"
+        android:name="com.example.media.EditFileFragment"
+        android:label="Edit File Fragment"
+        tools:layout="@layout/fragment_editfile">
         <argument
             android:name="myIdx"
             app:argType="integer"

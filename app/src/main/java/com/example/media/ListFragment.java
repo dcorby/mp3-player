@@ -14,7 +14,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.media.databinding.FragmentHomeBinding;
 import java.util.ArrayList;
 
-public class HomeFragment extends Fragment {
+public class ListFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     private MainReceiver receiver;
@@ -71,7 +71,7 @@ public class HomeFragment extends Fragment {
                 if (myFile.getIsNew()) {
                     Bundle bundle = new Bundle();
                     bundle.putInt("myIdx", pos);
-                    NavHostFragment.findNavController(HomeFragment.this)
+                    NavHostFragment.findNavController(ListFragment.this)
                             .navigate(R.id.action_HomeFragment_to_ProcessFragment, bundle);
                 }
             }
@@ -86,7 +86,7 @@ public class HomeFragment extends Fragment {
                 if (!myFile.getIsFolder()) {
                     Bundle bundle = new Bundle();
                     bundle.putInt("myIdx", pos);
-                    NavHostFragment.findNavController(HomeFragment.this)
+                    NavHostFragment.findNavController(ListFragment.this)
                             .navigate(R.id.action_HomeFragment_to_EditFileFragment, bundle);
                 }
 

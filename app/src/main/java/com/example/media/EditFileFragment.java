@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class ProcessFragment extends Fragment {
+public class EditFileFragment extends Fragment {
 
     private FragmentProcessBinding binding;
     public ArrayAdapter tagsAdapter;
@@ -149,7 +149,7 @@ public class ProcessFragment extends Fragment {
                     fileManager.setNew();
                     fileManager.setProcessed(dbManager);
                     Toast.makeText(getContext(), "File processed!", Toast.LENGTH_SHORT).show();
-                    NavHostFragment.findNavController(ProcessFragment.this).popBackStack();
+                    NavHostFragment.findNavController(EditFileFragment.this).popBackStack();
                 } catch(Exception e) {
                     Toast.makeText(getContext(), "Error processing file", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();

@@ -32,12 +32,6 @@ public class DBHelper extends SQLiteOpenHelper {
             .append("  name TEXT PRIMARY KEY NOT NULL")
             .append(");").toString();
 
-    private static final String CREATE_LISTSLISTS = new StringBuilder()
-            .append("CREATE TABLE IF NOT EXISTS listslists (")
-            .append("  list TEXT PRIMARY KEY NOT NULL,")
-            .append("  inlist TEXT NOT NULL")
-            .append(");").toString();
-
     private static final String CREATE_LISTSTAGS = new StringBuilder()
             .append("CREATE TABLE IF NOT EXISTS liststags (")
             .append("  list TEXT PRIMARY KEY NOT NULL,")
@@ -59,7 +53,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 CREATE_FILESLISTS,
                 CREATE_FILESTAGS,
                 CREATE_LISTS,
-                CREATE_LISTSLISTS,
                 CREATE_LISTSTAGS,
                 CREATE_TAGS
         };
@@ -85,7 +78,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 "fileslists",
                 "filestags",
                 "lists",
-                "listslists",
                 "liststags",
                 "tags"
         };

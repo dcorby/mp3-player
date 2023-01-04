@@ -3,18 +3,22 @@ package com.example.media;
 import android.os.Environment;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 public class FileManager {
 
-    private ArrayList<MyFile> filesNew;
-    private ArrayList<MyFile> filesProcessed;
-    private ArrayList<MyFile> filesAll;
-    private ArrayList<MyFile> filesFiltered;
+    public ArrayList<MyFile> filesNew;
+    public ArrayList<MyFile> filesProcessed;
+    public ArrayList<MyFile> folders;
+    public ArrayList<MyFile> filesAll;
+    public ArrayList<MyFile> filesFiltered;
 
     public FileManager(DBManager dbManager) {
         setNew();
         setProcessed(dbManager);
+        setFolders(dbManager);
     }
 
     // getFilesRoot()
@@ -35,7 +39,7 @@ public class FileManager {
         File mediaFolder = new File(getFilesRoot());
         File tmp[] = mediaFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".mp3"));
         for (int i = 0; i < tmp.length; i++) {
-            filesNew.add(new MyFile(tmp[i].getAbsolutePath(), true));
+            filesNew.add(new MyFile(tmp[i].getAbsolutePath(), true, false));
         }
     }
 
@@ -51,19 +55,44 @@ public class FileManager {
         ArrayList<HashMap> tmp = dbManager.fetch(query, null);
         for (int i = 0; i < tmp.size(); i++) {
             String pathname = getFilesRoot() + "/" + tmp.get(i).get("name");
-            MyFile processed = new MyFile(pathname, false);
+            MyFile processed = new MyFile(pathname, false, false);
             filesProcessed.add(processed);
         }
     }
 
-    public ArrayList<MyFile> getAll() {
+    // setFolders()
+    public void setFolders(DBManager dbManager) {
+        folders = new ArrayList<MyFile>();
+        String query = "SELECT * FROM lists";
+        ArrayList<HashMap> tmp = dbManager.fetch(query, null);
+        for (int i = 0; i < tmp.size(); i++) {
+            MyFile processed = new MyFile(tmp.get(i).get("name").toString(), false, true);
+            folders.add(processed);
+        }
+    }
+
+    // getFolders()
+    public ArrayList<MyFile> getFolders() {
+        return folders;
+    }
+
+    public ArrayList<MyFile> getAll(Boolean withFolders) {
+
         filesAll = new ArrayList<MyFile>();
-        for (int i = 0; i < filesNew.size(); i++) {
-            filesAll.add(filesNew.get(i));
+        filesAll.addAll(filesNew);
+        filesAll.addAll(filesProcessed);
+        if (withFolders) {
+            filesAll.addAll(folders);
         }
-        for (int i = 0; i < filesProcessed.size(); i++) {
-            filesAll.add(filesProcessed.get(i));
-        }
+        Collections.sort(filesAll, new Comparator<MyFile>() {
+            @Override
+            public int compare(MyFile f1, MyFile f2) {
+                if (f1.getIsNew() != f2.getIsNew()) {
+                    return Boolean.compare(f1.getIsNew(), f2.getIsNew());
+                }
+                return f1.getName().compareTo(f2.getName());
+            }
+        });
         return filesAll;
     }
 }
