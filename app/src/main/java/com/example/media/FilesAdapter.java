@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.media.MyFile;
 import java.util.ArrayList;
@@ -28,10 +29,15 @@ public class FilesAdapter extends ArrayAdapter {
         TextView label = convertView.findViewById(R.id.label);
         label.setText(myFile.toString());
         if (myFile.getIsNew()) {
-            label.setTextColor(Color.parseColor("#488214"));
-        }
-        if (myFile.getIsFolder()) {
-            label.setTextColor(Color.parseColor("#0000ff"));
+            label.setTextColor(Color.parseColor("#cccccc"));
+        } else {
+            if (myFile.getIsFolder()) {
+                ImageView imageView = convertView.findViewById(R.id.folder);
+                imageView.setVisibility(View.VISIBLE);
+            } else {
+                ImageView imageView = convertView.findViewById(R.id.play);
+                imageView.setVisibility(View.VISIBLE);
+            }
         }
 
         return convertView;

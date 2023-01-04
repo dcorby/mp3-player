@@ -37,7 +37,7 @@ public class HomeFragment extends Fragment {
         ArrayList<Object> tags = dbManager.fetch("SELECT * FROM tags", null, "name");
         tags.add(0, "Tags");
         if (fileManager.getNew().size() > 0) {
-            tags.add(0, "New");
+            tags.add(1, "New");
         }
         Spinner spinner = binding.spinner;
 

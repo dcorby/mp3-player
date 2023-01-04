@@ -1,0 +1,14 @@
+<!-- drawable/play.xml -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:height="34dp"
+    android:width="34dp"
+    android:viewportWidth="34"
+    android:viewportHeight="34">
+
+    <group
+        android:translateY="10"
+        android:translateX="5">
+
+    <path android:fillColor="#00ffff" android:pathData="M8,5.14V19.14L19,12.14L8,5.14Z" />
+    </group>
+</vector>
