@@ -6,20 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ListsFragment">
 
-    <EditText
-        android:id="@+id/listsearch"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        app:layout_constraintWidth_percent="0.80"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/addlist"
-        android:layout_marginTop="50dp"
-        android:hint="Search..."
-        android:padding="10dp"
-        android:background="@color/light_green"/>
-
     <!-- add list button -->
     <Button
         android:id="@+id/addlist"
@@ -30,7 +16,7 @@
         app:layout_constraintWidth_percent="0.80"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/listsearch"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/listlist"
         android:background="@color/purple_500"
         android:text="Add List">
@@ -42,7 +28,7 @@
         android:layout_height="0dp"
         app:layout_constraintWidth_percent="0.80"
         android:text="tags"
-        android:background="@color/light_blue"
+        android:background="@drawable/border"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
