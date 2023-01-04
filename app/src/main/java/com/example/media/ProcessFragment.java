@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -82,10 +83,9 @@ public class ProcessFragment extends Fragment {
                 if (position == 0) {
                     return;
                 }
-                View tag = layoutInflater.inflate(R.layout.tag, null);
-                TextView textView = tag.findViewById(R.id.text);
+                TextView tag = (TextView)layoutInflater.inflate(R.layout.tag, null);
                 String name = tagsList.get(position).toString();
-                textView.setText(name);
+                tag.setText(name);
                 binding.tagholder.addView(tag);
                 dataTags.add(name);
             }

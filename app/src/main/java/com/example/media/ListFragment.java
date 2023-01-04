@@ -33,7 +33,6 @@ public class ListFragment extends Fragment {
         receiver = (MainReceiver) getActivity();
         dbManager = receiver.getDBManager();
         fileManager = receiver.getFileManager();
-
         return binding.getRoot();
     }
 

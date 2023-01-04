@@ -89,7 +89,7 @@ public class FileManager {
             @Override
             public int compare(MyFile f1, MyFile f2) {
                 if (f1.getIsNew() != f2.getIsNew()) {
-                    return Boolean.compare(f1.getIsNew(), f2.getIsNew());
+                    return Boolean.compare(f2.getIsNew(), f1.getIsNew());
                 }
                 return f1.getName().compareTo(f2.getName());
             }

@@ -31,13 +31,16 @@
     <fragment
         android:id="@+id/ListFragment"
         android:name="com.example.media.ListFragment"
-        android:label="List Fragment"
+        android:label="{listName}"
         tools:layout="@layout/fragment_list">
+        <argument
+            android:name="listName"
+            app:argType="string"
+            android:defaultValue="" />
         <action
             android:id="@+id/action_ListFragment_to_EditFileFragment"
             app:destination="@id/EditFileFragment" />
     </fragment>
-
 
     <navigation
         android:id="@+id/ListsGraph"

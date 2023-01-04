@@ -70,7 +70,6 @@ public class HomeFragment extends Fragment {
 
         // set the files/folders list
         arrayAdapter = new FilesAdapter(getActivity(), fileManager.getAll(true));
-        //arrayAdapter = new ArrayAdapter<MyFile>(getActivity(), R.layout.media_item, fileManager.getNew());
         binding.medialist.setAdapter(arrayAdapter);
 
         binding.medialist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -86,6 +85,7 @@ public class HomeFragment extends Fragment {
                 } else if (myFile.getIsFolder()) {
                     Bundle bundle = new Bundle();
                     bundle.putInt("myIdx", pos);
+                    bundle.putString("listName", myFile.toString());
                     NavHostFragment.findNavController(HomeFragment.this)
                             .navigate(R.id.action_HomeFragment_to_ListFragment, bundle);
                 } else {
@@ -119,7 +119,6 @@ public class HomeFragment extends Fragment {
         binding.medialist.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long id) {
-
                 MyFile myFile = fileManager.getAll(true).get(pos);
 
                 if (!myFile.getIsFolder()) {
@@ -128,7 +127,6 @@ public class HomeFragment extends Fragment {
                     NavHostFragment.findNavController(HomeFragment.this)
                             .navigate(R.id.action_HomeFragment_to_EditFileFragment, bundle);
                 }
-
                 return true;
             }
         });
