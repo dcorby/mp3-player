@@ -4,12 +4,13 @@ public class SpinnerItem {
     private String title;
     private boolean selected;
 
-    public String getTitle() {
-        return title;
+    public SpinnerItem(String t, Boolean s) {
+        title = t;
+        selected = s;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public String getTitle() {
+        return title;
     }
 
     public boolean isSelected() {

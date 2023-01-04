@@ -61,6 +61,14 @@ public class DBManager {
         }
         return arrayList;
     }
+    public ArrayList<Object> fetch(String query, String[] args, String flatten) {
+        ArrayList<HashMap> tmp = fetch(query, args);
+        ArrayList<Object> flattened = new ArrayList<>();
+        for (int i = 0; i < tmp.size(); i++) {
+            flattened.add(String.valueOf(tmp.get(i).get(flatten)));
+        }
+        return flattened;
+    }
 
     public void beginTransaction() {
         database.beginTransaction();

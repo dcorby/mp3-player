@@ -30,14 +30,16 @@ public class ProcessFragment extends Fragment {
     private DBManager dbManager;
     private LayoutInflater layoutInflater;
     private MyFile myFile;
+    private FileManager fileManager;
 
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-        receiver = (MainReceiver) getActivity();
         layoutInflater = inflater;
+        receiver = (MainReceiver) getActivity();
+        fileManager = receiver.getFileManager();
         binding = FragmentProcessBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -49,7 +51,7 @@ public class ProcessFragment extends Fragment {
         }
 
         Integer idx = getArguments().getInt("myIdx");
-        myFile = receiver.getNewMyFiles().get(idx);
+        myFile = fileManager.getAll().get(idx);
         binding.processName.setText(myFile.getName());
         binding.processName.setEnabled(false);
 
@@ -57,23 +59,15 @@ public class ProcessFragment extends Fragment {
             dbManager = receiver.getDBManager();
         }
 
-        ArrayList<HashMap> tagsList = dbManager.fetch("SELECT * FROM tags", null);
-        ArrayList<HashMap> listsList = dbManager.fetch("SELECT * FROM lists", null);
+        ArrayList<Object> tagsList = dbManager.fetch("SELECT * FROM tags", null, "name");
+        tagsList.add(0, "Tags");
+        ArrayList<Object> listsList = dbManager.fetch("SELECT * FROM lists", null, "name");
+        listsList.add(0, "Lists");
 
-        ArrayList<String> tagsNames = new ArrayList<>(Arrays.asList("Tags"));
-        ArrayList<String> listsNames = new ArrayList<>(Arrays.asList("Lists"));
-
-        for (int i = 0; i < tagsList.size(); i++) {
-            tagsNames.add(String.valueOf(tagsList.get(i).get("name")));
-        }
-        for (int i = 0; i < listsList.size(); i++) {
-            listsNames.add(String.valueOf(listsList.get(i).get("name")));
-        }
-
-        tagsAdapter = new ArrayAdapter<>(getActivity(), R.layout.text_item, tagsNames);
+        tagsAdapter = new ArrayAdapter<>(getActivity(), R.layout.text_item, tagsList);
         binding.processTags.setAdapter(tagsAdapter);
 
-        listsAdapter = new ArrayAdapter<>(getActivity(), R.layout.text_item, listsNames);
+        listsAdapter = new ArrayAdapter<>(getActivity(), R.layout.text_item, listsList);
         binding.processLists.setAdapter(listsAdapter);
 
         // get name, tags, and lists
@@ -90,7 +84,7 @@ public class ProcessFragment extends Fragment {
                 }
                 View tag = layoutInflater.inflate(R.layout.tag, null);
                 TextView textView = tag.findViewById(R.id.text);
-                String name = tagsNames.get(position);
+                String name = tagsList.get(position).toString();
                 textView.setText(name);
                 binding.tagholder.addView(tag);
                 dataTags.add(name);
@@ -107,7 +101,7 @@ public class ProcessFragment extends Fragment {
                 }
                 View list = layoutInflater.inflate(R.layout.tag, null);
                 TextView textView = list.findViewById(R.id.text);
-                String name = listsNames.get(position);
+                String name = listsList.get(position).toString();
                 textView.setText(name);
                 binding.listholder.addView(list);
                 dataLists.add(name);
@@ -149,9 +143,11 @@ public class ProcessFragment extends Fragment {
                         }
                     }
 
-                    String newPath = myFile.getParent() + "/processed/" + String.valueOf(id) + "." + myFile.ext;
+                    String newPath = myFile.getParent() + "/processed/" + id + "." + myFile.ext;
                     myFile.renameTo(new File(newPath));
                     dbManager.commitTransaction();
+                    fileManager.setNew();
+                    fileManager.setProcessed(dbManager);
                     Toast.makeText(getContext(), "File processed!", Toast.LENGTH_SHORT).show();
                     NavHostFragment.findNavController(ProcessFragment.this).popBackStack();
                 } catch(Exception e) {
