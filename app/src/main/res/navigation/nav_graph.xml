@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/HomeFragment"
         android:name="com.example.media.HomeFragment"
-        android:label="Home Fragment"
+        android:label="Simple MP3"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_HomeFragment_to_ListsGraph"

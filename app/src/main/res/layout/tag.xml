@@ -1,21 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tag"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@color/pink">
-    <TextView
-        android:id="@+id/text"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New"
-        android:padding="5dp">
-    </TextView>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="x"
-        android:padding="5dp">
-    </TextView>
-</LinearLayout>
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:textColor="@color/white"
+        android:textSize="16dp"
+        android:background="@drawable/tagbg">
+</TextView>

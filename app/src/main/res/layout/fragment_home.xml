@@ -15,8 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="0.80"
         android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:entries="@array/array_name">
+        android:layout_height="50dp">
     </Spinner>
 
     <com.google.android.flexbox.FlexboxLayout
@@ -31,8 +30,8 @@
         app:flexWrap="wrap"
         app:showDivider="beginning|middle"
         app:dividerDrawable="@drawable/divider"
-        android:paddingStart="20dp"
-        android:paddingEnd="10dp" >
+        android:paddingStart="0dp"
+        android:paddingEnd="0dp" >
         <!-- tags -->
     </com.google.android.flexbox.FlexboxLayout>
 
@@ -43,12 +42,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="0.80"
-        android:background="@color/light_blue"
+        android:background="@drawable/border_bottom"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:paddingStart="20dp"
+        android:paddingStart="10dp"
         android:paddingEnd="10dp"
-        android:hint="@string/search_hint"
+        android:hint="Search.."
+        android:textColor="#222222"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         />
 
     <!-- ListView for results -->
@@ -61,7 +63,7 @@
         app:layout_constraintBottom_toTopOf="@id/player"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/border" />
+        android:background="@drawable/border_left" />
 
     <!-- Player -->
     <LinearLayout
@@ -73,8 +75,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="0.80"
-        android:background="@color/light_blue"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp" >
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

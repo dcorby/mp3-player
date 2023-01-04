@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -52,9 +53,8 @@ public class HomeFragment extends Fragment {
 
         // add the "New" tag
         if (fileManager.getNew().size() > 0) {
-            View tag = inflater.inflate(R.layout.tag, null);
-            TextView textView = tag.findViewById(R.id.text);
-            textView.setText("New");
+            TextView tag = (TextView)inflater.inflate(R.layout.tag, null);
+            tag.setText("New");
             binding.tagholder.addView(tag);
         }
 
