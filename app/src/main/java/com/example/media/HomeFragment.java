@@ -92,21 +92,24 @@ public class HomeFragment extends Fragment {
                     Uri uri = Uri.parse(myFile.getAbsolutePath());
                     mediaPlayer = MediaPlayer.create(getActivity(), uri);
                     try {
-                        mediaPlayer.prepare();
+                        // no need to call prepare
+                        // https://stackoverflow.com/questions/35079310/mediaplayer-prepare-showing-illegal-state-exception
+                        // mediaPlayer.prepare();
                         mediaPlayer.start();
                         int duration = mediaPlayer.getDuration();
                         binding.player.setVisibility(View.VISIBLE);
-                        binding.name.setText(myFile.getName());
-                        binding.length.setText(mediaPlayer.getDuration());
+                        binding.name.setText(myFile.toString());
+                        binding.length.setText(String.valueOf(mediaPlayer.getDuration()));
 
                         // https://www.tutorialspoint.com/how-to-run-a-method-every-10-seconds-in-android
                         handler.postDelayed(runnable = new Runnable() {
                             public void run() {
                                 handler.postDelayed(runnable, 1000);
-                                binding.current.setText(mediaPlayer.getCurrentPosition());
+                                binding.current.setText(String.valueOf(mediaPlayer.getCurrentPosition()));
                             }
                         }, 1000);
                     } catch (Exception e) {
+                        e.printStackTrace();
                         Toast.makeText(getContext(), "Error playing file", Toast.LENGTH_SHORT).show();
                     }
                 }

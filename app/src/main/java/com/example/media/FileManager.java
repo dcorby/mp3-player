@@ -54,8 +54,9 @@ public class FileManager {
         String query = "SELECT * FROM files";
         ArrayList<HashMap> tmp = dbManager.fetch(query, null);
         for (int i = 0; i < tmp.size(); i++) {
-            String pathname = getFilesRoot() + "/" + tmp.get(i).get("name");
-            MyFile processed = new MyFile(pathname, false, false);
+            String pathname = getFilesRoot() + "/processed/" + tmp.get(i).get("id") + ".mp3";
+            String name = tmp.get(i).get("name").toString() + ".mp3";
+            MyFile processed = new MyFile(pathname, name, false, false);
             filesProcessed.add(processed);
         }
     }
