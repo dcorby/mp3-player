@@ -104,8 +104,10 @@ public class HomeFragment extends Fragment {
                         // https://www.tutorialspoint.com/how-to-run-a-method-every-10-seconds-in-android
                         handler.postDelayed(runnable = new Runnable() {
                             public void run() {
-                                handler.postDelayed(runnable, 1000);
-                                binding.player.current.setText(String.valueOf(mediaPlayer.getCurrentPosition()));
+                                if (handler != null) {
+                                    handler.postDelayed(runnable, 1000);
+                                    binding.player.current.setText(String.valueOf(mediaPlayer.getCurrentPosition()));
+                                }
                             }
                         }, 1000);
                     } catch (Exception e) {

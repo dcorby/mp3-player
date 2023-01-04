@@ -14,6 +14,7 @@ public class FileManager {
     public ArrayList<MyFile> folders;
     public ArrayList<MyFile> filesAll;
     public ArrayList<MyFile> filesFiltered;
+    public ArrayList<MyFile> filesList;
 
     public FileManager(DBManager dbManager) {
         setNew();
@@ -77,6 +78,7 @@ public class FileManager {
         return folders;
     }
 
+    // getAll()
     public ArrayList<MyFile> getAll(Boolean withFolders) {
 
         filesAll = new ArrayList<MyFile>();
@@ -96,4 +98,14 @@ public class FileManager {
         });
         return filesAll;
     }
+
+//    // getFilesList()
+//    public ArrayList<MyFile> getFilesList() {
+//        return filesList;
+//    }
+//
+//    // setFilesList()
+//    public void setFilesList(DBManager dbManager) {
+//        filesList  = new ArrayList<MyFile>();
+//    }
 }
