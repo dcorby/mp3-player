@@ -97,15 +97,15 @@ public class HomeFragment extends Fragment {
                         // mediaPlayer.prepare();
                         mediaPlayer.start();
                         int duration = mediaPlayer.getDuration();
-                        binding.player.setVisibility(View.VISIBLE);
-                        binding.name.setText(myFile.toString());
-                        binding.length.setText(String.valueOf(mediaPlayer.getDuration()));
+                        binding.player.player.setVisibility(View.VISIBLE);
+                        binding.player.name.setText(myFile.toString());
+                        binding.player.length.setText(String.valueOf(mediaPlayer.getDuration()));
 
                         // https://www.tutorialspoint.com/how-to-run-a-method-every-10-seconds-in-android
                         handler.postDelayed(runnable = new Runnable() {
                             public void run() {
                                 handler.postDelayed(runnable, 1000);
-                                binding.current.setText(String.valueOf(mediaPlayer.getCurrentPosition()));
+                                binding.player.current.setText(String.valueOf(mediaPlayer.getCurrentPosition()));
                             }
                         }, 1000);
                     } catch (Exception e) {
