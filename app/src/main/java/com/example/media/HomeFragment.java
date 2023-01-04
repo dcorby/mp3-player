@@ -74,6 +74,13 @@ public class HomeFragment extends Fragment {
                     NavHostFragment.findNavController(HomeFragment.this)
                             .navigate(R.id.action_HomeFragment_to_ProcessFragment, bundle);
                 }
+
+                if (myFile.getIsFolder()) {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("myIdx", pos);
+                    NavHostFragment.findNavController(HomeFragment.this)
+                            .navigate(R.id.action_HomeFragment_to_ListFragment, bundle);
+                }
             }
         });
 

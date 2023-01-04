@@ -17,7 +17,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_FILESLISTS = new StringBuilder()
             .append("CREATE TABLE IF NOT EXISTS fileslists (")
-            .append("  file TEXT PRIMARY KEY NOT NULL,")
+            .append("  file INTEGER PRIMARY KEY NOT NULL,")
             .append("  list TEXT NOT NULL")
             .append(");").toString();
 

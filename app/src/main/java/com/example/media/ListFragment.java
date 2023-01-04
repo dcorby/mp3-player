@@ -11,12 +11,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
-import com.example.media.databinding.FragmentHomeBinding;
+import com.example.media.databinding.FragmentListBinding;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 public class ListFragment extends Fragment {
 
-    private FragmentHomeBinding binding;
+    private FragmentListBinding binding;
     private MainReceiver receiver;
     private DBManager dbManager;
     private FileManager fileManager;
@@ -27,40 +29,35 @@ public class ListFragment extends Fragment {
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = FragmentListBinding.inflate(inflater, container, false);
         receiver = (MainReceiver) getActivity();
         dbManager = receiver.getDBManager();
         fileManager = receiver.getFileManager();
 
-        // set the tags spinner
-        ArrayList<Object> tags = dbManager.fetch("SELECT * FROM tags", null, "name");
-        tags.add(0, "Tags");
-        if (fileManager.getNew().size() > 0) {
-            tags.add(0, "New");
-        }
-        Spinner spinner = binding.spinner;
+        return binding.getRoot();
+    }
 
-        ArrayList<SpinnerItem> spinnerItems = new ArrayList<>();
-        for (int i = 0; i < tags.size(); i++) {
-            String name = tags.get(i).toString();
-            Boolean selected = (name == "New") ? true : false;
-            SpinnerItem spinnerItem = new SpinnerItem(name, selected);
-            spinnerItems.add(spinnerItem);
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (getArguments() == null) {
+            return;
         }
-        CustomAdapter customAdapter = new CustomAdapter(getActivity(), 0, spinnerItems);
-        spinner.setAdapter(customAdapter);
 
-        // add the "New" tag
-        if (fileManager.getNew().size() > 0) {
-            View tag = inflater.inflate(R.layout.tag, null);
-            TextView textView = tag.findViewById(R.id.text);
-            textView.setText("New");
-            binding.tagholder.addView(tag);
+        Integer idx = getArguments().getInt("myIdx");
+        MyFile myFile = fileManager.getAll(true).get(idx);
+        String name = myFile.getName();
+
+        String query = "SELECT t1.file AS file, t2.name AS name FROM fileslists AS t1 INNER JOIN files AS t2 ON(t1.file = t2.id) WHERE list = ?";
+        String args[] = { name };
+        ArrayList<HashMap> files = dbManager.fetch(query, args);
+        ArrayList<Object> fileNames = new ArrayList<>();
+        for (int i = 0; i < files.size(); i++) {
+            HashMap foo = files.get(i);
+            fileNames.add(files.get(i).get("name"));
         }
 
         // set the files/folders list
-        arrayAdapter = new FilesAdapter(getActivity(), fileManager.getAll(true));
-        //arrayAdapter = new ArrayAdapter<MyFile>(getActivity(), R.layout.media_item, fileManager.getNew());
+        arrayAdapter = new ArrayAdapter(getActivity(), R.layout.media_item, fileNames);
         binding.medialist.setAdapter(arrayAdapter);
 
         binding.medialist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -68,12 +65,7 @@ public class ListFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
                 MyFile myFile = fileManager.getAll(true).get(pos);
 
-                if (myFile.getIsNew()) {
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("myIdx", pos);
-                    NavHostFragment.findNavController(ListFragment.this)
-                            .navigate(R.id.action_HomeFragment_to_ProcessFragment, bundle);
-                }
+                // only have files. play it...
             }
         });
 
@@ -81,24 +73,16 @@ public class ListFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long id) {
 
-                MyFile myFile = fileManager.getAll(true).get(pos);
-
-                if (!myFile.getIsFolder()) {
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("myIdx", pos);
-                    NavHostFragment.findNavController(ListFragment.this)
-                            .navigate(R.id.action_HomeFragment_to_EditFileFragment, bundle);
-                }
-
+//                MyFile myFile = fileManager.getAll(true).get(pos);
+//
+//                Bundle bundle = new Bundle();
+//                bundle.putInt("myIdx", pos);
+//                NavHostFragment.findNavController(ListFragment.this)
+//                        .navigate(R.id.action_HomeFragment_to_EditFileFragment, bundle);
+//
                 return true;
             }
         });
-
-        return binding.getRoot();
-    }
-
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
