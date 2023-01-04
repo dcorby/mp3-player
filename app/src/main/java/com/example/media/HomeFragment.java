@@ -1,6 +1,9 @@
 package com.example.media;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,8 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import com.example.media.databinding.FragmentHomeBinding;
 import java.util.ArrayList;
+import android.media.MediaPlayer;
+import android.widget.Toast;
 
 public class HomeFragment extends Fragment {
 
@@ -22,6 +27,11 @@ public class HomeFragment extends Fragment {
     private DBManager dbManager;
     private FileManager fileManager;
     public ArrayAdapter arrayAdapter;
+    private MediaPlayer mediaPlayer;
+
+    // for the clock
+    Handler handler = new Handler();
+    Runnable runnable;
 
     @Override
     public View onCreateView(
@@ -73,13 +83,32 @@ public class HomeFragment extends Fragment {
                     bundle.putInt("myIdx", pos);
                     NavHostFragment.findNavController(HomeFragment.this)
                             .navigate(R.id.action_HomeFragment_to_ProcessFragment, bundle);
-                }
-
-                if (myFile.getIsFolder()) {
+                } else if (myFile.getIsFolder()) {
                     Bundle bundle = new Bundle();
                     bundle.putInt("myIdx", pos);
                     NavHostFragment.findNavController(HomeFragment.this)
                             .navigate(R.id.action_HomeFragment_to_ListFragment, bundle);
+                } else {
+                    Uri uri = Uri.parse(myFile.getAbsolutePath());
+                    mediaPlayer = MediaPlayer.create(getActivity(), uri);
+                    try {
+                        mediaPlayer.prepare();
+                        mediaPlayer.start();
+                        int duration = mediaPlayer.getDuration();
+                        binding.player.setVisibility(View.VISIBLE);
+                        binding.name.setText(myFile.getName());
+                        binding.length.setText(mediaPlayer.getDuration());
+
+                        // https://www.tutorialspoint.com/how-to-run-a-method-every-10-seconds-in-android
+                        handler.postDelayed(runnable = new Runnable() {
+                            public void run() {
+                                handler.postDelayed(runnable, 1000);
+                                binding.current.setText(mediaPlayer.getCurrentPosition());
+                            }
+                        }, 1000);
+                    } catch (Exception e) {
+                        Toast.makeText(getContext(), "Error playing file", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
