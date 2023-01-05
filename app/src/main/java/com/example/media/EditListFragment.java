@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -37,6 +38,7 @@ public class EditListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         curName = getArguments().getString("listName");
+        binding.name.setText(curName);
 
         binding.rename.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +62,10 @@ public class EditListFragment extends Fragment {
                     dbManager.exec(query3, args);
 
                     dbManager.commitTransaction();
-                    getActivity().setTitle("Edit List - " + name);
+                    curName = name;
+                    // https://stackoverflow.com/questions/36461022/settitle-doesnt-work-in-fragment
+                    // should probably just use the receiver
+                    ((MainActivity)getActivity()).setActionBarTitle("Edit List - " + name);
                     Toast.makeText(getContext(), "List renamed!", Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "Error renaming list", Toast.LENGTH_SHORT).show();

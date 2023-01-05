@@ -36,6 +36,7 @@ public class EditTagFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         curName = getArguments().getString("tagName");
+        binding.name.setText(curName);
 
         binding.rename.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,7 +52,7 @@ public class EditTagFragment extends Fragment {
                     dbManager.exec(query1, args);
 
                     // update filestags
-                    String query2 = "UPDATE fileslists SET tag = ? WHERE tag = ?";
+                    String query2 = "UPDATE filestags SET tag = ? WHERE tag = ?";
                     dbManager.exec(query2, args);
 
                     // update liststags
@@ -59,7 +60,9 @@ public class EditTagFragment extends Fragment {
                     dbManager.exec(query3, args);
 
                     dbManager.commitTransaction();
-                    getActivity().setTitle("Edit Tag - " + name);
+                    curName = name;
+                    ((MainActivity)getActivity()).setActionBarTitle("Edit Tag - " + name);
+                    Toast.makeText(getContext(), "Tag renamed!", Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "Error renaming tag", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
@@ -82,7 +85,7 @@ public class EditTagFragment extends Fragment {
                     dbManager.exec(query1, args);
 
                     // update filestags
-                    String query2 = "UPDATE fileslists SET tag = NULL WHERE tag = ?";
+                    String query2 = "UPDATE filestags SET tag = NULL WHERE tag = ?";
                     dbManager.exec(query2, args);
 
                     // update liststags

@@ -51,6 +51,12 @@ public class MainActivity extends AppCompatActivity implements MainReceiver {
         return fileManager;
     }
 
+    // Is this okay? Or use the receiver?
+    // https://stackoverflow.com/questions/36461022/settitle-doesnt-work-in-fragment
+    public void setActionBarTitle(String title) {
+        getSupportActionBar().setTitle(title);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
