@@ -128,7 +128,7 @@
     <fragment
         android:id="@+id/EditFileFragment"
         android:name="com.example.media.EditFileFragment"
-        android:label="Edit File Fragment"
+        android:label="Edit File"
         tools:layout="@layout/fragment_editfile">
         <argument
             android:name="myIdx"

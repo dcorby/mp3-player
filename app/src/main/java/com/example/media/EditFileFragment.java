@@ -1,7 +1,6 @@
 package com.example.media;
 
 import android.content.ContentValues;
-import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,17 +12,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
-import com.example.media.databinding.FragmentProcessBinding;
-
+import com.example.media.databinding.FragmentEditfileBinding;
+import com.google.android.flexbox.FlexboxLayout;
 import java.io.File;
-import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 
 public class EditFileFragment extends Fragment {
 
-    private FragmentProcessBinding binding;
+    private FragmentEditfileBinding binding;
     public ArrayAdapter tagsAdapter;
     public ArrayAdapter listsAdapter;
     private MainReceiver receiver;
@@ -31,6 +27,8 @@ public class EditFileFragment extends Fragment {
     private LayoutInflater layoutInflater;
     private MyFile myFile;
     private FileManager fileManager;
+    private ArrayList<Object> listsList;
+    private ArrayList<Object> tagsList;
 
     @Override
     public View onCreateView(
@@ -40,7 +38,7 @@ public class EditFileFragment extends Fragment {
         layoutInflater = inflater;
         receiver = (MainReceiver) getActivity();
         fileManager = receiver.getFileManager();
-        binding = FragmentProcessBinding.inflate(inflater, container, false);
+        binding = FragmentEditfileBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -52,84 +50,96 @@ public class EditFileFragment extends Fragment {
 
         Integer idx = getArguments().getInt("myIdx");
         myFile = fileManager.getAll(true, true).get(idx);
-        binding.processName.setText(myFile.getName());
-        binding.processName.setEnabled(false);
+        binding.editfileName. setText(myFile.getName());
+        binding.editfileName.setEnabled(false);
 
         if (dbManager == null) {
             dbManager = receiver.getDBManager();
         }
 
-        ArrayList<Object> tagsList = dbManager.fetch("SELECT * FROM tags", null, "name");
-        tagsList.add(0, "Tags");
-        ArrayList<Object> listsList = dbManager.fetch("SELECT * FROM lists", null, "name");
-        listsList.add(0, "Lists");
+        // add the spinners with all tags and lists
+        tagsList = dbManager.fetch("SELECT * FROM tags", null, "name");
+        tagsList.add(0, "Add Tags...");
+        listsList = dbManager.fetch("SELECT * FROM lists", null, "name");
+        listsList.add(0, "Add Lists...");
 
         tagsAdapter = new ArrayAdapter<>(getActivity(), R.layout.text_item, tagsList);
-        binding.processTags.setAdapter(tagsAdapter);
-
+        binding.editfileTags.setAdapter(tagsAdapter);
         listsAdapter = new ArrayAdapter<>(getActivity(), R.layout.text_item, listsList);
-        binding.processLists.setAdapter(listsAdapter);
+        binding.editfileLists.setAdapter(listsAdapter);
 
-        // get name, tags, and lists
-        String dataName = binding.processName.getText().toString();
-        ArrayList<String> dataTags = new ArrayList();
-        ArrayList<String> dataLists = new ArrayList();
+        // get the data for the holders
+        String args[] = { myFile.getName().replace("." + myFile.ext, "") };
+        ArrayList<Object> dataTags = dbManager.fetch("SELECT * FROM filestags WHERE file = ?", args, "tag");
+        ArrayList<Object> dataLists = dbManager.fetch("SELECT * FROM fileslists WHERE file = ?", args, "list");
 
-        // add tags and lists to holders
-        binding.processTags.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        // update the holders
+        updateTags(layoutInflater, binding.tagholder, dataTags);
+        updateTags(layoutInflater, binding.listholder, dataLists);
+
+        // and/remove to/from holders
+        binding.editfileTags.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {
                     return;
                 }
-                View tag = layoutInflater.inflate(R.layout.tag, null);
-                TextView textView = tag.findViewById(R.id.text);
                 String name = tagsList.get(position).toString();
-                textView.setText(name);
-                binding.tagholder.addView(tag);
-                dataTags.add(name);
+                if (dataTags.contains(name)) {
+                    dataTags.remove(name);
+                } else {
+                    dataTags.add(name);
+                }
+                binding.editfileTags.setSelection(0);
+                updateTags(layoutInflater, binding.tagholder, dataTags);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        binding.processLists.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.editfileLists.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {
                     return;
                 }
-                View list = layoutInflater.inflate(R.layout.tag, null);
-                TextView textView = list.findViewById(R.id.text);
                 String name = listsList.get(position).toString();
-                textView.setText(name);
-                binding.listholder.addView(list);
-                dataLists.add(name);
+                if (dataLists.contains(name)) {
+                    dataLists.remove(name);
+                } else {
+                    dataLists.add(name);
+                }
+                binding.editfileLists.setSelection(0);
+                updateTags(layoutInflater, binding.listholder, dataLists);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
 
-        binding.processSubmit.setOnClickListener(new View.OnClickListener() {
+        binding.editfileSubmit.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 try {
                     // begin transactions
                     dbManager.beginTransaction();
 
+                    ContentValues values;
+
                     // insert the file
-                    ContentValues filesValues = new ContentValues();
-                    filesValues.put("name", dataName);
-                    long id = dbManager.insert("files", filesValues);
+                    values = new ContentValues();
+                    String name = binding.editfileName.getText().toString().trim();
+                    values.put("name", name);
+                    long id = dbManager.insert("files", values);
 
                     // insert filestags
                     if (dataTags.size() > 0) {
                         for (int i = 0; i < dataTags.size(); i++) {
-                            ContentValues filesTagsValues = new ContentValues();
-                            filesTagsValues.put("file", id);
-                            filesTagsValues.put("tag", dataTags.get(i));
-                            dbManager.insert("filestags", filesTagsValues);
+                            values = new ContentValues();
+                            values.put("file", id);
+                            values.put("tag", dataTags.get(i).toString());
+                            dbManager.insert("filestags", values);
                         }
                     }
 
@@ -138,7 +148,7 @@ public class EditFileFragment extends Fragment {
                         for (int i = 0; i < dataLists.size(); i++) {
                             ContentValues filesListsValues = new ContentValues();
                             filesListsValues.put("file", id);
-                            filesListsValues.put("list", dataLists.get(i));
+                            filesListsValues.put("list", dataLists.get(i).toString());
                             dbManager.insert("fileslists", filesListsValues);
                         }
                     }
@@ -158,6 +168,18 @@ public class EditFileFragment extends Fragment {
                 }
             }
         });
+    }
+
+    public void updateTags(LayoutInflater inflater, FlexboxLayout holder, ArrayList<Object> tags) {
+        holder.removeAllViews();
+        for (int i = 0; i < tags.size(); i++) {
+            TextView tag = (TextView)inflater.inflate(R.layout.tag, null);
+            String name = tags.get(i).toString();
+            if (name != "Add Tags..." && name != "Add Lists..." ) {
+                tag.setText(name);
+                binding.tagholder.addView(tag);
+            }
+        }
     }
 
     @Override

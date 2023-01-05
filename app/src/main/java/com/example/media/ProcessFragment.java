@@ -117,7 +117,6 @@ public class ProcessFragment extends Fragment {
                 String name = tagsList.get(position).toString();
                 if (dataTags.contains(name)) {
                     dataTags.remove(name);
-
                 } else {
                     dataTags.add(name);
                 }
@@ -137,7 +136,6 @@ public class ProcessFragment extends Fragment {
                 String name = listsList.get(position).toString();
                 if (dataLists.contains(name)) {
                     dataLists.remove(name);
-
                 } else {
                     dataLists.add(name);
                 }
@@ -149,6 +147,7 @@ public class ProcessFragment extends Fragment {
             }
         });
 
+        // add
         binding.processSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:hint="Name"
-        android:background="@color/light_green"
+        android:background="@drawable/border_bottom"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/editfile_tags"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,7 +42,6 @@
         app:dividerDrawable="@drawable/divider"
         android:paddingStart="20dp"
         android:paddingEnd="10dp" >
-        <!-- tags -->
     </com.google.android.flexbox.FlexboxLayout>
 
     <Spinner
@@ -62,7 +61,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="0.80"
-        android:background="@color/pink"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:flexWrap="wrap"
@@ -70,14 +68,13 @@
         app:dividerDrawable="@drawable/divider"
         android:paddingStart="20dp"
         android:paddingEnd="10dp" >
-        <!-- tags -->
     </com.google.android.flexbox.FlexboxLayout>
 
     <Button
         android:id="@+id/editfile_submit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Submit"
+        android:text="Edit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
