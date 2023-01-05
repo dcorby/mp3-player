@@ -51,7 +51,7 @@ public class ListFragment extends Fragment {
 
         // get the folder name
         Integer idx = getArguments().getInt("myIdx");
-        MyFile myFolder = fileManager.getAll(true).get(idx);
+        MyFile myFolder = fileManager.getAll(true, true).get(idx);
         String folder = myFolder.toString();
 
         // get the files in this folder

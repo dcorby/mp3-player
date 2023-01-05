@@ -68,7 +68,8 @@ public class HomeFragment extends Fragment {
                 String[] array = tags.toArray(new String[tags.size()]);
                 updateTags(inflater, tags);
                 fileManager.setProcessed(dbManager, array);
-                filesList = fileManager.getAll(true);
+                fileManager.setFolders(dbManager, array);
+                filesList = fileManager.getAll(true, true);
                 arrayAdapter.notifyDataSetChanged();
             }
         };
@@ -80,13 +81,16 @@ public class HomeFragment extends Fragment {
         updateTags(inflater, tags);
 
         // set the files/folders list
-        filesList = fileManager.getAll(true);
+        String[] array = tags.toArray(new String[tags.size()]);
+        fileManager.setProcessed(dbManager, array);
+        fileManager.setFolders(dbManager, array);
+        filesList = fileManager.getAll(true, true);
         arrayAdapter = new FilesAdapter(getActivity(), filesList);
         binding.medialist.setAdapter(arrayAdapter);
         binding.medialist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
-                MyFile myFile = fileManager.getAll(true).get(pos);
+                MyFile myFile = fileManager.getAll(true, true).get(pos);
 
                 if (myFile.getIsNew()) {
                     Bundle bundle = new Bundle();
@@ -132,7 +136,7 @@ public class HomeFragment extends Fragment {
         binding.medialist.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long id) {
-                MyFile myFile = fileManager.getAll(true).get(pos);
+                MyFile myFile = fileManager.getAll(true, true).get(pos);
 
                 if (!myFile.getIsFolder()) {
                     Bundle bundle = new Bundle();

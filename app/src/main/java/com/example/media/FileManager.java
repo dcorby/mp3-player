@@ -1,8 +1,6 @@
 package com.example.media;
 
 import android.os.Environment;
-import android.util.Log;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,8 +19,8 @@ public class FileManager {
 
     public FileManager(DBManager dbManager) {
         setNew();
-        setProcessed(dbManager, null);
-        setFolders(dbManager);
+        setProcessed(dbManager, new String[]{});
+        setFolders(dbManager, new String[]{});
     }
 
     // getFilesRoot()
@@ -83,13 +81,23 @@ public class FileManager {
     }
 
     // setFolders()
-    public void setFolders(DBManager dbManager) {
+    public void setFolders(DBManager dbManager, String[] tags) {
         if (folders == null) {
             folders = new ArrayList<MyFile>();
         } else {
             folders.clear();
         }
-        String query = "SELECT * FROM lists";
+
+        String query;
+        if (tags == null) {
+            query = "SELECT * FROM lists ORDER BY name ASC";
+        } else {
+            String tmp[] = new String[tags.length];
+            Arrays.fill(tmp, "?");
+            String placeholders = String.join(",", tmp);
+            query = "SELECT t1.name AS name FROM lists AS t1 JOIN liststags AS t2 ON t1.name = t2.list WHERE t2.tag IN (" + placeholders +")";
+        }
+
         ArrayList<HashMap> tmp = dbManager.fetch(query, null);
         for (int i = 0; i < tmp.size(); i++) {
             MyFile processed = new MyFile(tmp.get(i).get("name").toString(), false, true);
@@ -103,13 +111,15 @@ public class FileManager {
     }
 
     // getAll()
-    public ArrayList<MyFile> getAll(Boolean withFolders) {
+    public ArrayList<MyFile> getAll(Boolean withFolders, Boolean withNew) {
         if (filesAll == null) {
             filesAll = new ArrayList<MyFile>();
         } else {
             filesAll.clear();
         }
-        filesAll.addAll(filesNew);
+        if (withNew) {
+            filesAll.addAll(filesNew);
+        }
         filesAll.addAll(filesProcessed);
         if (withFolders) {
             filesAll.addAll(folders);
@@ -125,14 +135,4 @@ public class FileManager {
         });
         return filesAll;
     }
-
-//    // getFilesList()
-//    public ArrayList<MyFile> getFilesList() {
-//        return filesList;
-//    }
-//
-//    // setFilesList()
-//    public void setFilesList(DBManager dbManager) {
-//        filesList  = new ArrayList<MyFile>();
-//    }
 }

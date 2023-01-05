@@ -52,7 +52,7 @@ public class ProcessFragment extends Fragment {
         }
 
         Integer idx = getArguments().getInt("myIdx");
-        myFile = fileManager.getAll(true).get(idx);
+        myFile = fileManager.getAll(true, true).get(idx);
         binding.processName.setText(myFile.getName());
         binding.processName.setEnabled(false);
 
@@ -99,12 +99,12 @@ public class ProcessFragment extends Fragment {
                 if (position == 0) {
                     return;
                 }
-                View list = layoutInflater.inflate(R.layout.tag, null);
-                TextView textView = list.findViewById(R.id.text);
-                String name = listsList.get(position).toString();
-                textView.setText(name);
-                binding.listholder.addView(list);
-                dataLists.add(name);
+//                View list = layoutInflater.inflate(R.layout.tag, null);
+//                TextView textView = list.findViewById(R.id.text);
+//                String name = listsList.get(position).toString();
+//                textView.setText(name);
+//                binding.listholder.addView(list);
+//                dataLists.add(name);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {

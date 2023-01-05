@@ -51,7 +51,7 @@ public class EditFileFragment extends Fragment {
         }
 
         Integer idx = getArguments().getInt("myIdx");
-        myFile = fileManager.getAll(true).get(idx);
+        myFile = fileManager.getAll(true, true).get(idx);
         binding.processName.setText(myFile.getName());
         binding.processName.setEnabled(false);
 
