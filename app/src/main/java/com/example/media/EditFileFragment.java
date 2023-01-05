@@ -147,7 +147,7 @@ public class EditFileFragment extends Fragment {
                     myFile.renameTo(new File(newPath));
                     dbManager.commitTransaction();
                     fileManager.setNew();
-                    fileManager.setProcessed(dbManager);
+                    fileManager.setProcessed(dbManager, null);
                     Toast.makeText(getContext(), "File processed!", Toast.LENGTH_SHORT).show();
                     NavHostFragment.findNavController(EditFileFragment.this).popBackStack();
                 } catch(Exception e) {

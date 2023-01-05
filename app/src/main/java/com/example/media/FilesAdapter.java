@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.example.media.MyFile;
 import java.util.ArrayList;
 
 public class FilesAdapter extends ArrayAdapter {
@@ -28,15 +27,19 @@ public class FilesAdapter extends ArrayAdapter {
 
         TextView label = convertView.findViewById(R.id.label);
         label.setText(myFile.toString());
+
+        ImageView folderView = convertView.findViewById(R.id.folder);
+        ImageView playView = convertView.findViewById(R.id.play);
+        folderView.setVisibility(View.GONE);
+        playView.setVisibility(View.GONE);
+
         if (myFile.getIsNew()) {
             label.setTextColor(Color.parseColor("#cccccc"));
         } else {
             if (myFile.getIsFolder()) {
-                ImageView imageView = convertView.findViewById(R.id.folder);
-                imageView.setVisibility(View.VISIBLE);
+                folderView.setVisibility(View.VISIBLE);
             } else {
-                ImageView imageView = convertView.findViewById(R.id.play);
-                imageView.setVisibility(View.VISIBLE);
+                playView.setVisibility(View.VISIBLE);
             }
         }
 

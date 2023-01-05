@@ -1,8 +1,11 @@
 package com.example.media;
 
 import android.os.Environment;
+import android.util.Log;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -18,7 +21,7 @@ public class FileManager {
 
     public FileManager(DBManager dbManager) {
         setNew();
-        setProcessed(dbManager);
+        setProcessed(dbManager, null);
         setFolders(dbManager);
     }
 
@@ -36,7 +39,11 @@ public class FileManager {
 
     // setNew()
     public void setNew() {
-        filesNew = new ArrayList<MyFile>();
+        if (filesNew == null) {
+            filesNew = new ArrayList<MyFile>();
+        } else {
+            filesNew.clear();
+        }
         File mediaFolder = new File(getFilesRoot());
         File tmp[] = mediaFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".mp3"));
         for (int i = 0; i < tmp.length; i++) {
@@ -50,10 +57,23 @@ public class FileManager {
     }
 
     // setProcessed()
-    public void setProcessed(DBManager dbManager) {
-        filesProcessed = new ArrayList<MyFile>();
-        String query = "SELECT * FROM files";
-        ArrayList<HashMap> tmp = dbManager.fetch(query, null);
+    public void setProcessed(DBManager dbManager, String[] tags) {
+        if (filesProcessed == null) {
+            filesProcessed = new ArrayList<MyFile>();
+        } else {
+            filesProcessed.clear();
+        }
+        String query;
+        if (tags == null) {
+            query = "SELECT * FROM files";
+        } else {
+            String tmp[] = new String[tags.length];
+            Arrays.fill(tmp, "?");
+            String placeholders = String.join(",", tmp);
+            query = "SELECT t1.id AS id, t1.name AS name FROM files AS t1 JOIN filestags AS t2 ON t1.id = t2.file WHERE t2.tag IN (" + placeholders +")";
+        }
+
+        ArrayList<HashMap> tmp = dbManager.fetch(query, tags);
         for (int i = 0; i < tmp.size(); i++) {
             String pathname = getFilesRoot() + "/processed/" + tmp.get(i).get("id") + ".mp3";
             String name = tmp.get(i).get("name").toString() + ".mp3";
@@ -64,7 +84,11 @@ public class FileManager {
 
     // setFolders()
     public void setFolders(DBManager dbManager) {
-        folders = new ArrayList<MyFile>();
+        if (folders == null) {
+            folders = new ArrayList<MyFile>();
+        } else {
+            folders.clear();
+        }
         String query = "SELECT * FROM lists";
         ArrayList<HashMap> tmp = dbManager.fetch(query, null);
         for (int i = 0; i < tmp.size(); i++) {
@@ -80,8 +104,11 @@ public class FileManager {
 
     // getAll()
     public ArrayList<MyFile> getAll(Boolean withFolders) {
-
-        filesAll = new ArrayList<MyFile>();
+        if (filesAll == null) {
+            filesAll = new ArrayList<MyFile>();
+        } else {
+            filesAll.clear();
+        }
         filesAll.addAll(filesNew);
         filesAll.addAll(filesProcessed);
         if (withFolders) {

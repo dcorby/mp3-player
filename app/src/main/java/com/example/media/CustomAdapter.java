@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 
 public class CustomAdapter extends ArrayAdapter<SpinnerItem> {
@@ -16,12 +15,14 @@ public class CustomAdapter extends ArrayAdapter<SpinnerItem> {
     private ArrayList<SpinnerItem> listState;
     private CustomAdapter myAdapter;
     private boolean isFromView = false;
+    private Callback callback;
 
-    public CustomAdapter(Context context, int resource, ArrayList<SpinnerItem> objects) {
+    public CustomAdapter(Context context, int resource, ArrayList<SpinnerItem> objects, Callback callback) {
         super(context, resource, objects);
         this.mContext = context;
         this.listState = (ArrayList<SpinnerItem>) objects;
         this.myAdapter = this;
+        this.callback = callback;
     }
 
     @Override
@@ -67,7 +68,9 @@ public class CustomAdapter extends ArrayAdapter<SpinnerItem> {
                 int getPosition = (Integer) buttonView.getTag();
                 if (!isFromView) {
                     listState.get(position).setSelected(isChecked);
+                    callback.run(listState.get(position).getTitle(), isChecked);
                 }
+
             }
         });
         return convertView;

@@ -2,15 +2,12 @@ package com.example.media;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -28,6 +25,7 @@ public class HomeFragment extends Fragment {
     private FileManager fileManager;
     public ArrayAdapter arrayAdapter;
     private MediaPlayer mediaPlayer;
+    private ArrayList<MyFile> filesList;
 
     // for the clock
     Handler handler = new Handler();
@@ -44,34 +42,47 @@ public class HomeFragment extends Fragment {
         fileManager = receiver.getFileManager();
 
         // set the tags spinner
+        // get the tags
         ArrayList<Object> tags = dbManager.fetch("SELECT * FROM tags", null, "name");
         tags.add(0, "Tags");
         if (fileManager.getNew().size() > 0) {
             tags.add(1, "New");
         }
-        Spinner spinner = binding.spinner;
 
+        // get the spinner items
         ArrayList<SpinnerItem> spinnerItems = new ArrayList<>();
         for (int i = 0; i < tags.size(); i++) {
             String name = tags.get(i).toString();
-            Boolean selected = (name == "New") ? true : false;
-            SpinnerItem spinnerItem = new SpinnerItem(name, selected);
+            SpinnerItem spinnerItem = new SpinnerItem(name, true);
             spinnerItems.add(spinnerItem);
         }
-        CustomAdapter customAdapter = new CustomAdapter(getActivity(), 0, spinnerItems);
-        spinner.setAdapter(customAdapter);
+
+        // track changes to tags
+        Callback callback = new Callback() {
+            public void run(String tag, Boolean isChecked) {
+                if (isChecked) {
+                    tags.add(tag);
+                } else {
+                    tags.remove(tag);
+                }
+                String[] array = tags.toArray(new String[tags.size()]);
+                updateTags(inflater, tags);
+                fileManager.setProcessed(dbManager, array);
+                filesList = fileManager.getAll(true);
+                arrayAdapter.notifyDataSetChanged();
+            }
+        };
+
+        CustomAdapter customAdapter = new CustomAdapter(getActivity(), 0, spinnerItems, callback);
+        binding.spinner.setAdapter(customAdapter);
 
         // add the "New" tag
-        if (fileManager.getNew().size() > 0) {
-            TextView tag = (TextView)inflater.inflate(R.layout.tag, null);
-            tag.setText("New");
-            binding.tagholder.addView(tag);
-        }
+        updateTags(inflater, tags);
 
         // set the files/folders list
-        arrayAdapter = new FilesAdapter(getActivity(), fileManager.getAll(true));
+        filesList = fileManager.getAll(true);
+        arrayAdapter = new FilesAdapter(getActivity(), filesList);
         binding.medialist.setAdapter(arrayAdapter);
-
         binding.medialist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
@@ -134,6 +145,18 @@ public class HomeFragment extends Fragment {
         });
 
         return binding.getRoot();
+    }
+
+    public void updateTags(LayoutInflater inflater, ArrayList<Object> tags) {
+        binding.tagholder.removeAllViews();
+        for (int i = 0; i < tags.size(); i++) {
+            TextView tag = (TextView)inflater.inflate(R.layout.tag, null);
+            String name = tags.get(i).toString();
+            if (name != "Tags") {
+                tag.setText(name);
+                binding.tagholder.addView(tag);
+            }
+        }
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
