@@ -121,7 +121,9 @@ public class ListFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        mediaPlayer.stop();
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+        }
         handler = null;
     }
 
