@@ -19,7 +19,8 @@ public class TagsFragment extends Fragment {
     private DBManager dbManager;
     public ArrayAdapter arrayAdapter;
     private FragmentTagsBinding binding;
-    private ArrayList<String> listsList;
+    private ArrayList<Object> tagsList;
+    private String query;
 
     @Override
     public View onCreateView(
@@ -35,8 +36,8 @@ public class TagsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String query = "SELECT name FROM tags ORDER BY name ASC";
-        ArrayList<Object> tagsList = dbManager.fetch(query, null, "name");
+        query = "SELECT name FROM tags ORDER BY name ASC";
+        tagsList = dbManager.fetch(query, null, "name");
 
         // set the lists list
         arrayAdapter = new ArrayAdapter(getActivity(), R.layout.text_item, tagsList);
@@ -61,6 +62,13 @@ public class TagsFragment extends Fragment {
                         .navigate(R.id.action_TagsFragment_to_EditTagFragment, bundle);
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        tagsList = dbManager.fetch(query, null, "name");
+        arrayAdapter.notifyDataSetChanged();
     }
 
     @Override

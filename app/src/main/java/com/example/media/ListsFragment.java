@@ -20,7 +20,8 @@ public class ListsFragment extends Fragment {
     private DBManager dbManager;
     public ArrayAdapter arrayAdapter;
     private FragmentListsBinding binding;
-    private ArrayList<String> listsList;
+    private ArrayList<Object> listsList;
+    private String query;
 
     @Override
     public View onCreateView(
@@ -36,8 +37,8 @@ public class ListsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String query = "SELECT name FROM lists ORDER BY name ASC";
-        ArrayList<Object> listsList = dbManager.fetch(query, null, "name");
+        query = "SELECT name FROM lists ORDER BY name ASC";
+        listsList = dbManager.fetch(query, null, "name");
 
         // set the lists list
         arrayAdapter = new ArrayAdapter(getActivity(), R.layout.text_item, listsList);
@@ -62,6 +63,13 @@ public class ListsFragment extends Fragment {
                         .navigate(R.id.action_ListsFragment_to_EditListFragment, bundle);
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        listsList = dbManager.fetch(query, null, "name");
+        arrayAdapter.notifyDataSetChanged();
     }
 
     @Override

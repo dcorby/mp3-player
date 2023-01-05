@@ -70,6 +70,11 @@ public class DBManager {
         return flattened;
     }
 
+    public void exec(String query, String[] args) {
+        database.execSQL(query, args);
+    }
+
+    // transactions
     public void beginTransaction() {
         database.beginTransaction();
     }
@@ -80,15 +85,4 @@ public class DBManager {
         database.endTransaction();
     }
 
-    //public int update(long _id, String name, String desc) {
-        //ContentValues contentValues = new ContentValues();
-        //contentValues.put(DatabaseHelper.SUBJECT, name);
-        //contentValues.put(DatabaseHelper.DESC, desc);
-        //int i = database.update(DatabaseHelper.TABLE_NAME, contentValues, DatabaseHelper._ID + " = " + _id, null);
-        //return i;
-    //}
-
-    public void delete(long _id) {
-        //database.delete(DatabaseHelper.TABLE_NAME, DatabaseHelper._ID + "=" + _id, null);
-    }
 }
