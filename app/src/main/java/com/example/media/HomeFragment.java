@@ -41,7 +41,6 @@ public class HomeFragment extends Fragment {
         dbManager = receiver.getDBManager();
         fileManager = receiver.getFileManager();
 
-        // set the tags spinner
         // get the tags
         ArrayList<Object> tags = dbManager.fetch("SELECT * FROM tags", null, "name");
         tags.add(0, "Tags");
@@ -57,7 +56,7 @@ public class HomeFragment extends Fragment {
             spinnerItems.add(spinnerItem);
         }
 
-        // track changes to tags
+        // track changes to tags with callback from spinner change event
         Callback callback = new Callback() {
             public void run(String tag, Boolean isChecked) {
                 if (isChecked) {
@@ -69,22 +68,23 @@ public class HomeFragment extends Fragment {
                 updateTags(inflater, tags);
                 fileManager.setProcessed(dbManager, array);
                 fileManager.setFolders(dbManager, array);
-                filesList = fileManager.getAll(true, true);
+                filesList = fileManager.getAll(true, tags.contains("New"));
                 arrayAdapter.notifyDataSetChanged();
             }
         };
 
+        // initialize spinner adapter
         CustomAdapter customAdapter = new CustomAdapter(getActivity(), 0, spinnerItems, callback);
         binding.spinner.setAdapter(customAdapter);
 
-        // add the "New" tag
+        // add tags to the holder
         updateTags(inflater, tags);
 
-        // set the files/folders list
+        // set files list
         String[] array = tags.toArray(new String[tags.size()]);
         fileManager.setProcessed(dbManager, array);
         fileManager.setFolders(dbManager, array);
-        filesList = fileManager.getAll(true, true);
+        filesList = fileManager.getAll(true, tags.contains("New"));
         arrayAdapter = new FilesAdapter(getActivity(), filesList);
         binding.medialist.setAdapter(arrayAdapter);
         binding.medialist.setOnItemClickListener(new AdapterView.OnItemClickListener() {

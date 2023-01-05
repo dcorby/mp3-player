@@ -1,26 +1,23 @@
 package com.example.media;
 
 import android.content.ContentValues;
-import android.database.sqlite.SQLiteConstraintException;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import com.example.media.databinding.FragmentProcessBinding;
-
+import com.google.android.flexbox.FlexboxLayout;
 import java.io.File;
-import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+
 
 public class ProcessFragment extends Fragment {
 
@@ -32,6 +29,8 @@ public class ProcessFragment extends Fragment {
     private LayoutInflater layoutInflater;
     private MyFile myFile;
     private FileManager fileManager;
+    private ArrayList<Object> listsList;
+    private ArrayList<Object> tagsList;
 
     @Override
     public View onCreateView(
@@ -60,15 +59,47 @@ public class ProcessFragment extends Fragment {
             dbManager = receiver.getDBManager();
         }
 
-        ArrayList<Object> tagsList = dbManager.fetch("SELECT * FROM tags", null, "name");
-        tagsList.add(0, "Tags");
-        ArrayList<Object> listsList = dbManager.fetch("SELECT * FROM lists", null, "name");
-        listsList.add(0, "Lists");
+        tagsList = dbManager.fetch("SELECT * FROM tags", null, "name");
+        tagsList.add(0, "Add Tags...");
+        listsList = dbManager.fetch("SELECT * FROM lists", null, "name");
+        listsList.add(0, "Add Lists...");
 
-        tagsAdapter = new ArrayAdapter<>(getActivity(), R.layout.text_item, tagsList);
+        // make first spinner item a hint
+        // https://stackoverflow.com/questions/37019941/how-to-add-a-hint-in-spinner-in-xml
+        // set tags adapter
+        tagsAdapter = new ArrayAdapter<Object>(getActivity(), R.layout.text_item, tagsList) {
+            @Override
+            public boolean isEnabled(int position) {
+                if (position == 0) {
+                    return false;
+                }
+                return true;
+            }
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                TextView textView = (TextView)super.getDropDownView(position, convertView, parent);
+                textView.setTextColor((position == 0) ? Color.GRAY : Color.BLACK);
+                return textView;
+            }
+        };
         binding.processTags.setAdapter(tagsAdapter);
 
-        listsAdapter = new ArrayAdapter<>(getActivity(), R.layout.text_item, listsList);
+        // set lists adapter
+        listsAdapter = new ArrayAdapter<Object>(getActivity(), R.layout.text_item, listsList) {
+            @Override
+            public boolean isEnabled(int position) {
+                if (position == 0) {
+                    return false;
+                }
+                return true;
+            }
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                TextView textView = (TextView)super.getDropDownView(position, convertView, parent);
+                textView.setTextColor((position == 0) ? Color.GRAY : Color.BLACK);
+                return textView;
+            }
+        };
         binding.processLists.setAdapter(listsAdapter);
 
         // get name, tags, and lists
@@ -83,11 +114,15 @@ public class ProcessFragment extends Fragment {
                 if (position == 0) {
                     return;
                 }
-                TextView tag = (TextView)layoutInflater.inflate(R.layout.tag, null);
                 String name = tagsList.get(position).toString();
-                tag.setText(name);
-                binding.tagholder.addView(tag);
-                dataTags.add(name);
+                if (dataTags.contains(name)) {
+                    dataTags.remove(name);
+
+                } else {
+                    dataTags.add(name);
+                }
+                binding.processTags.setSelection(0);
+                updateTags(dataTags, binding.tagholder);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -99,12 +134,15 @@ public class ProcessFragment extends Fragment {
                 if (position == 0) {
                     return;
                 }
-//                View list = layoutInflater.inflate(R.layout.tag, null);
-//                TextView textView = list.findViewById(R.id.text);
-//                String name = listsList.get(position).toString();
-//                textView.setText(name);
-//                binding.listholder.addView(list);
-//                dataLists.add(name);
+                String name = listsList.get(position).toString();
+                if (dataLists.contains(name)) {
+                    dataLists.remove(name);
+
+                } else {
+                    dataLists.add(name);
+                }
+                binding.processLists.setSelection(0);
+                updateTags(dataLists, binding.listholder);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -158,6 +196,15 @@ public class ProcessFragment extends Fragment {
                 }
             }
         });
+    }
+
+    public void updateTags(ArrayList<String> list, FlexboxLayout holder) {
+        holder.removeAllViews();
+        for (int i = 0; i < list.size(); i++) {
+            TextView tag = (TextView)layoutInflater.inflate(R.layout.tag, null);
+            tag.setText(list.get(i));
+            holder.addView(tag);
+        }
     }
 
     @Override

@@ -117,7 +117,7 @@
     <fragment
         android:id="@+id/ProcessFragment"
         android:name="com.example.media.ProcessFragment"
-        android:label="Process Fragment"
+        android:label="Add File"
         tools:layout="@layout/fragment_process">
         <argument
             android:name="myIdx"
