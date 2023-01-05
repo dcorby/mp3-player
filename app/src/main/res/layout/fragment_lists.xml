@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ListsFragment">
 
-    <!-- add list button -->
     <Button
         android:id="@+id/addlist"
         android:layout_width="0dp"
@@ -17,19 +16,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/listlist"
+        app:layout_constraintBottom_toTopOf="@id/listslist"
         android:background="@color/purple_500"
         android:text="Add List">
     </Button>
 
     <ListView
-        android:id="@+id/listlist"
+        android:id="@+id/listslist"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintWidth_percent="0.80"
         android:text="tags"
-        android:background="@drawable/border"
-        android:layout_marginTop="10dp"
+        android:background="@drawable/border_left"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -17,19 +17,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/taglist"
+        app:layout_constraintBottom_toTopOf="@id/tagslist"
         android:background="@color/purple_500"
         android:text="Add Tag">
     </Button>
 
     <ListView
-        android:id="@+id/taglist"
+        android:id="@+id/tagslist"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintWidth_percent="0.80"
         android:text="tags"
-        android:background="@drawable/border"
-        android:layout_marginTop="10dp"
+        android:background="@drawable/border_left"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

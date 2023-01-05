@@ -49,7 +49,7 @@
         <fragment
             android:id="@+id/ListsFragment"
             android:name="com.example.media.ListsFragment"
-            android:label="Lists Fragment"
+            android:label="Lists"
             tools:layout="@layout/fragment_lists">
             <action
                 android:id="@+id/action_ListsFragment_to_AddListFragment"
@@ -62,15 +62,19 @@
         <fragment
             android:id="@+id/fragment_addlist"
             android:name="com.example.media.AddListFragment"
-            android:label="Add List Fragment"
+            android:label="Add List"
             tools:layout="@layout/fragment_addlist">
         </fragment>
 
         <fragment
             android:id="@+id/fragment_editlist"
             android:name="com.example.media.EditListFragment"
-            android:label="Edit List Fragment"
+            android:label="Edit List - {listName}"
             tools:layout="@layout/fragment_editlist">
+            <argument
+                android:name="listName"
+                app:argType="string"
+                android:defaultValue="" />
         </fragment>
     </navigation>
 
@@ -81,7 +85,7 @@
         <fragment
             android:id="@+id/TagsFragment"
             android:name="com.example.media.TagsFragment"
-            android:label="Tags Fragment"
+            android:label="Tags"
             tools:layout="@layout/fragment_tags">
             <action
                 android:id="@+id/action_TagsFragment_to_AddTagFragment"
@@ -94,15 +98,19 @@
         <fragment
             android:id="@+id/fragment_addtag"
             android:name="com.example.media.AddTagFragment"
-            android:label="Add Tag Fragment"
+            android:label="Add Tag"
             tools:layout="@layout/fragment_addtag">
         </fragment>
 
         <fragment
             android:id="@+id/fragment_edittag"
             android:name="com.example.media.EditTagFragment"
-            android:label="Edit Tag Fragment"
+            android:label="Edit Tag - {tagName}"
             tools:layout="@layout/fragment_edittag">
+            <argument
+                android:name="tagName"
+                app:argType="string"
+                android:defaultValue="" />
         </fragment>
     </navigation>
 
