@@ -60,9 +60,9 @@ public class ProcessFragment extends Fragment {
         }
 
         tagsList = dbManager.fetch("SELECT * FROM tags", null, "name");
-        tagsList.add(0, "Add Tags...");
+        tagsList.add(0, "Add Tag...");
         listsList = dbManager.fetch("SELECT * FROM lists", null, "name");
-        listsList.add(0, "Add Lists...");
+        listsList.add(0, "Add List...");
 
         // make first spinner item a hint
         // https://stackoverflow.com/questions/37019941/how-to-add-a-hint-in-spinner-in-xml

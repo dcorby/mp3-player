@@ -179,7 +179,7 @@ public class EditFileFragment extends Fragment {
         for (int i = 0; i < tags.size(); i++) {
             TextView tag = (TextView)inflater.inflate(R.layout.tag, null);
             String name = tags.get(i).toString();
-            if (name != "Add Tags..." && name != "Add Lists..." ) {
+            if (name != "Add Tag..." && name != "Add List..." ) {
                 tag.setText(name);
                 holder.addView(tag);
             }

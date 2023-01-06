@@ -26,7 +26,7 @@ public class EditListFragment extends Fragment {
     private FileManager fileManager;
     private String curName;
     private ArrayList<Object> tagsList;
-    public ArrayAdapter tagsAdapter;
+    private ArrayAdapter tagsAdapter;
 
     @Override
     public View onCreateView(
@@ -191,12 +191,12 @@ public class EditListFragment extends Fragment {
         });
     }
 
-    public void updateTags(LayoutInflater inflater, FlexboxLayout holder, ArrayList<Object> tags) {
+    private void updateTags(LayoutInflater inflater, FlexboxLayout holder, ArrayList<Object> tags) {
         holder.removeAllViews();
         for (int i = 0; i < tags.size(); i++) {
             TextView tag = (TextView)inflater.inflate(R.layout.tag, null);
             String name = tags.get(i).toString();
-            if (name != "Add Tags...") {
+            if (name != "Add Tag...") {
                 tag.setText(name);
                 holder.addView(tag);
             }
