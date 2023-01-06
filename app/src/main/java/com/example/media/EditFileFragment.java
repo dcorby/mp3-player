@@ -57,9 +57,9 @@ public class EditFileFragment extends Fragment {
 
         // add the spinners with all tags and lists
         tagsList = dbManager.fetch("SELECT * FROM tags", null, "name");
-        tagsList.add(0, "Add Tags...");
+        tagsList.add(0, "Add Tag...");
         listsList = dbManager.fetch("SELECT * FROM lists", null, "name");
-        listsList.add(0, "Add Lists...");
+        listsList.add(0, "Add List...");
 
         tagsAdapter = new ArrayAdapter<>(getActivity(), R.layout.text_item, tagsList);
         binding.editfileTags.setAdapter(tagsAdapter);
@@ -165,7 +165,7 @@ public class EditFileFragment extends Fragment {
                     }
 
                 } catch(Exception e) {
-                    Toast.makeText(getContext(), "Error processing file", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Error editing file", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 } finally {
                     dbManager.endTransaction();

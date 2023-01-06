@@ -1,6 +1,8 @@
 package com.example.media;
 
 import android.os.Environment;
+import android.util.Log;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -98,7 +100,7 @@ public class FileManager {
             query = "SELECT t1.name AS name FROM lists AS t1 JOIN liststags AS t2 ON t1.name = t2.list WHERE t2.tag IN (" + placeholders +")";
         }
 
-        ArrayList<HashMap> tmp = dbManager.fetch(query, null);
+        ArrayList<HashMap> tmp = dbManager.fetch(query, tags);
         for (int i = 0; i < tmp.size(); i++) {
             MyFile processed = new MyFile(tmp.get(i).get("name").toString(), false, true);
             folders.add(processed);
