@@ -2,6 +2,7 @@ package com.example.media;
 
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 import com.example.media.databinding.FragmentEditfileBinding;
 import com.google.android.flexbox.FlexboxLayout;
-import java.io.File;
 import java.util.ArrayList;
 
 public class EditFileFragment extends Fragment {
@@ -50,8 +49,7 @@ public class EditFileFragment extends Fragment {
 
         Integer idx = getArguments().getInt("myIdx");
         myFile = fileManager.getAll(true, true).get(idx);
-        binding.editfileName. setText(myFile.getName());
-        binding.editfileName.setEnabled(false);
+        binding.editfileName.setText(myFile.toString());
 
         if (dbManager == null) {
             dbManager = receiver.getDBManager();
@@ -125,41 +123,47 @@ public class EditFileFragment extends Fragment {
                     // begin transactions
                     dbManager.beginTransaction();
 
-                    ContentValues values;
+                    // get a reference to the file
+                    String curName = myFile.toString();
+                    String args1[] = { curName };
+                    ArrayList<Object> results = dbManager.fetch("SELECT * FROM files WHERE name = ?", args1, "id");
+                    String id = (String)results.get(0);
 
-                    // insert the file
-                    values = new ContentValues();
-                    String name = binding.editfileName.getText().toString().trim();
-                    values.put("name", name);
-                    long id = dbManager.insert("files", values);
-
-                    // insert filestags
-                    if (dataTags.size() > 0) {
-                        for (int i = 0; i < dataTags.size(); i++) {
-                            values = new ContentValues();
-                            values.put("file", id);
-                            values.put("tag", dataTags.get(i).toString());
-                            dbManager.insert("filestags", values);
-                        }
+                    // update the name
+                    String newName = binding.editfileName.getText().toString().trim();
+                    if (curName != newName) {
+                        String[] args2 = { newName, curName };
+                        dbManager.exec("UPDATE files SET name = ? WHERE name = ?", args2);
                     }
 
-                    // insert fileslists
-                    if (dataLists.size() > 0) {
-                        for (int i = 0; i < dataLists.size(); i++) {
-                            ContentValues filesListsValues = new ContentValues();
-                            filesListsValues.put("file", id);
-                            filesListsValues.put("list", dataLists.get(i).toString());
-                            dbManager.insert("fileslists", filesListsValues);
-                        }
+                    // delete the tags and lists associations
+                    String[] args3 = { id };
+                    dbManager.exec("DELETE FROM filestags WHERE file = ?", args3);
+                    dbManager.exec("DELETE FROM fileslists WHERE file = ?", args3);
+
+                    // update the tags and lists associations
+                    for (int i = 0; i < dataTags.size(); i++) {
+                        ContentValues values = new ContentValues();
+                        values.put("file", id);
+                        values.put("tag", dataTags.get(i).toString());
+                        dbManager.insert("filestags", values);
+                    }
+                    for (int i = 0; i < dataLists.size(); i++) {
+                        ContentValues values = new ContentValues();
+                        values.put("file", id);
+                        values.put("list", dataLists.get(i).toString());
+                        dbManager.insert("fileslists", values);
                     }
 
-                    String newPath = myFile.getParent() + "/processed/" + id + "." + myFile.ext;
-                    myFile.renameTo(new File(newPath));
                     dbManager.commitTransaction();
-                    fileManager.setNew();
-                    fileManager.setProcessed(dbManager, null);
-                    Toast.makeText(getContext(), "File processed!", Toast.LENGTH_SHORT).show();
-                    NavHostFragment.findNavController(EditFileFragment.this).popBackStack();
+
+                    // if the name was changed or tags were modified, recompile files
+                    if (curName != newName) {
+                        String[] array = dataTags.toArray(new String[dataTags.size()]);
+                        fileManager.setProcessed(dbManager, array);
+                        fileManager.setNew();
+                    }
+
                 } catch(Exception e) {
                     Toast.makeText(getContext(), "Error processing file", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
@@ -177,7 +181,7 @@ public class EditFileFragment extends Fragment {
             String name = tags.get(i).toString();
             if (name != "Add Tags..." && name != "Add Lists..." ) {
                 tag.setText(name);
-                binding.tagholder.addView(tag);
+                holder.addView(tag);
             }
         }
     }

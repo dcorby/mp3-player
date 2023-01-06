@@ -74,7 +74,7 @@ public class FileManager {
         ArrayList<HashMap> tmp = dbManager.fetch(query, tags);
         for (int i = 0; i < tmp.size(); i++) {
             String pathname = getFilesRoot() + "/processed/" + tmp.get(i).get("id") + ".mp3";
-            String name = tmp.get(i).get("name").toString() + ".mp3";
+            String name = tmp.get(i).get("name").toString();
             MyFile processed = new MyFile(pathname, name, false, false);
             filesProcessed.add(processed);
         }
