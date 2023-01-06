@@ -3,6 +3,8 @@ package com.example.media;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -145,6 +147,19 @@ public class HomeFragment extends Fragment {
                             .navigate(R.id.action_HomeFragment_to_EditFileFragment, bundle);
                 }
                 return true;
+            }
+        });
+
+        // filter text
+        // https://www.mysamplecode.com/2012/07/android-listview-edittext-filter.html
+        binding.medialist.setTextFilterEnabled(true);
+        binding.filter.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                arrayAdapter.getFilter().filter(s.toString());
             }
         });
 
